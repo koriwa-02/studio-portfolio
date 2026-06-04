@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KORIWA STUDIO</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#edeae3;
+  --black:#0d0d0d;
+  --red:#d63c1f;
+  --mid:#b5b0a8;
+  --serif:'Cormorant Garamond',serif;
+  --sans:'Inter',sans-serif;
+  --helv:'Arial','Helvetica Neue','Helvetica',sans-serif;
+  --helv-bold:'Arial Black','Arial Bold',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--black);font-family:var(--sans);cursor:none;overflow-x:hidden}
+
+/* CURSOR */
+#cursor{position:fixed;width:8px;height:8px;background:var(--black);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s,background .15s}
+#cursor.expand{transform:translate(-50%,-50%) scale(5);background:rgba(13,13,13,.08)}
+
+/* NAV */
+nav.site-nav{position:fixed;top:0;left:0;width:100%;z-index:100;height:64px;background:rgba(10,10,10,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.07);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 40px}
+.nav-logo{font-family:var(--helv);font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:#fff;justify-self:start}
+.nav-links{display:flex;gap:80px;align-items:center;justify-self:center}
+.nav-links a{font-family:var(--helv);font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.5);font-weight:400;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-spacer{justify-self:end}
+
+/* FLOATING CTA */
+#floatingBrief{position:fixed;top:14px;right:24px;z-index:200;background:#d63c1f;color:#fff;border:none;padding:11px 24px;font-family:var(--helv);font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;border-radius:0;-webkit-appearance:none;appearance:none;transition:background .2s,transform .2s;box-shadow:0 4px 20px rgba(214,60,31,.25)}
+#floatingBrief:hover{background:#b82e10;transform:translateY(-1px)}
+
+/* HERO */
+#hero{position:relative;min-height:100vh;background:var(--cream);padding:100px 0 40px;overflow:hidden;display:flex;flex-direction:column}
+.hero-top{text-align:center;padding:0 48px;max-width:1100px;margin:0 auto 40px}
+.hero-eyebrow{font-family:var(--helv);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--red);margin-bottom:20px;font-weight:500}
+.hero-title{font-family:var(--helv-bold);font-size:clamp(24px,3.4vw,46px);font-weight:900;line-height:1.05;color:var(--black);letter-spacing:-.015em;text-transform:uppercase;white-space:nowrap}
+.hero-title em{color:var(--red);font-style:normal}
+.hero-ctas{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;justify-content:center}
+.hero-btn{font-family:var(--helv);font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;padding:13px 26px;border:none;cursor:none;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all .25s;border-radius:0}
+.hero-btn.primary{background:transparent;color:var(--black);border:1px solid var(--black)}
+.hero-btn.primary:hover{background:var(--black);color:#fff}
+.hero-btn.accent{background:var(--red);color:#fff}
+.hero-btn.accent:hover{background:#b82e10}
+
+/* CAROUSEL */
+.carousel-wrap{flex:1;position:relative;width:100%;overflow:hidden;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.carousel-track{display:flex;gap:20px;padding:0 48px;transition:transform .8s cubic-bezier(.65,.05,.2,1);will-change:transform}
+.carousel-slide{flex:0 0 calc(33.333% - 14px);aspect-ratio:3/4;max-height:50vh;background:#1a1a1a;position:relative;overflow:hidden;cursor:none}
+.slide-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.slide-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.carousel-slide:hover .slide-bg{transform:scale(1.05)}
+.slide-bg .slide-watermark{font-family:var(--serif);font-size:48px;font-style:italic;font-weight:300;color:rgba(255,255,255,.1)}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.1) 50%,rgba(0,0,0,0) 100%);z-index:1}
+.slide-num{position:absolute;top:16px;left:16px;font-family:var(--helv);font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.6);text-transform:uppercase;z-index:2;font-weight:500}
+.slide-tag{position:absolute;top:16px;right:16px;font-family:var(--helv);font-size:8px;letter-spacing:.2em;color:#fff;text-transform:uppercase;z-index:2;background:var(--red);padding:5px 10px;font-weight:500}
+.slide-info{position:absolute;bottom:20px;left:20px;right:20px;z-index:2}
+.slide-cat{font-family:var(--helv);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px;font-weight:500}
+.slide-name{font-family:var(--serif);font-size:clamp(18px,1.6vw,24px);font-style:italic;font-weight:300;color:#fff;line-height:1.1}
+
+/* CAROUSEL COLORS */
+.s1{background:linear-gradient(135deg,#3a2a1f,#1a1410)}
+.s2{background:linear-gradient(135deg,#2a1a1a,#0d0d0d)}
+.s3{background:linear-gradient(135deg,#1a2028,#0d1014)}
+.s4{background:linear-gradient(135deg,#251a25,#100810)}
+.s5{background:linear-gradient(135deg,#1f2a1a,#10140d)}
+.s6{background:linear-gradient(135deg,#2a2520,#0d0d0d)}
+.s7{background:linear-gradient(135deg,#1a2624,#0d1311)}
+
+/* CAROUSEL CONTROLS */
+.carousel-controls{display:flex;justify-content:space-between;align-items:center;padding:24px 48px 0}
+.carousel-dots{display:flex;gap:8px}
+.dot{width:24px;height:2px;background:rgba(13,13,13,.15);cursor:none;transition:background .3s;border:none}
+.dot.active{background:var(--red)}
+.carousel-arrows{display:flex;gap:10px}
+.arrow-btn{width:38px;height:38px;border:1px solid rgba(13,13,13,.2);background:transparent;cursor:none;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--black);transition:all .25s}
+.arrow-btn:hover{background:var(--black);color:#fff;border-color:var(--black)}
+.carousel-counter{font-family:var(--helv);font-size:11px;letter-spacing:.2em;color:rgba(13,13,13,.5);text-transform:uppercase;font-weight:500}
+.carousel-counter strong{color:var(--black);font-weight:600}
+
+@media(max-width:1100px){
+  .carousel-slide{flex:0 0 calc(50% - 10px)}
+  .hero-title{white-space:normal}
+}
+@media(max-width:700px){
+  .carousel-slide{flex:0 0 calc(85% - 10px);aspect-ratio:4/5}
+  .carousel-track{padding:0 24px;gap:14px}
+  .carousel-controls{padding:18px 24px 0}
+  .hero-top{padding:0 24px}
+}
+.hero-scroll span{font-family:var(--helv);font-size:9px;letter-spacing:.2em;color:rgba(13,13,13,.3);text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(13,13,13,.3),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+
+/* MARQUEE */
+.marquee-wrap{border-top:1px solid var(--black);border-bottom:1px solid var(--black);overflow:hidden;padding:14px 0;background:var(--cream)}
+.marquee-track{display:flex;gap:0;white-space:nowrap;animation:marquee 25s linear infinite}
+.marquee-item{font-family:var(--helv);font-size:11px;font-weight:300;letter-spacing:.22em;text-transform:uppercase;padding:0 40px;color:var(--black);display:flex;align-items:center;gap:40px}
+.marquee-item::after{content:'✦';color:var(--red);font-size:8px}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* SECTION SHARED */
+section{padding:120px 48px}
+.section-label{font-family:var(--helv);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--red);margin-bottom:16px;font-weight:500}
+.section-title{font-family:var(--serif);font-size:clamp(48px,6vw,88px);font-weight:300;line-height:.95;margin-bottom:48px}
+
+/* FEATURED PROJECT */
+#featured{padding:0;position:relative}
+.featured-inner{display:grid;grid-template-columns:1fr 1fr;min-height:90vh}
+.featured-left{background:var(--black);display:flex;align-items:flex-end;padding:64px;position:relative;overflow:hidden}
+.featured-left-bg{position:absolute;inset:0;background:linear-gradient(160deg,#1a1512,#0d0d0d);display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.1);text-transform:uppercase}
+.featured-left-content{position:relative;z-index:1}
+.feat-num{font-family:var(--serif);font-size:120px;font-weight:300;color:rgba(255,255,255,.06);line-height:1;position:absolute;top:40px;left:40px;font-style:italic}
+.feat-tag{font-family:var(--helv);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--red);margin-bottom:16px}
+.feat-title{font-family:var(--serif);font-size:clamp(36px,4vw,64px);font-weight:300;color:#fff;line-height:1.05;font-style:italic;margin-bottom:24px}
+.feat-desc{font-family:var(--helv);font-size:11px;color:rgba(255,255,255,.4);line-height:1.8;max-width:280px;letter-spacing:.02em}
+.feat-link{display:inline-flex;align-items:center;gap:12px;margin-top:32px;font-family:var(--helv);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:4px}
+.feat-link:hover{color:var(--red);border-color:var(--red)}
+.featured-right{background:#e8e4dc;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.featured-right-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.2em;color:rgba(0,0,0,.2);text-transform:uppercase;flex-direction:column;gap:8px}
+.featured-right-img .img-label{font-family:var(--serif);font-size:80px;font-style:italic;color:rgba(0,0,0,.06);font-weight:300}
+.feat-anno{position:absolute;right:32px;top:48px;text-align:right}
+.feat-anno p{font-family:var(--helv);font-size:9px;letter-spacing:.1em;color:rgba(0,0,0,.35);line-height:1.8;text-transform:uppercase}
+
+/* WORK GRID */
+#work{background:var(--cream)}
+.work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;flex-wrap:wrap;gap:24px}
+.work-filter{display:flex;gap:24px;flex-wrap:wrap}
+.filter-btn{font-family:var(--helv);font-size:10px;letter-spacing:.15em;text-transform:uppercase;background:none;border:none;cursor:none;color:var(--mid);padding:6px 0;border-bottom:1px solid transparent;transition:all .2s}
+.filter-btn.active,.filter-btn:hover{color:var(--black);border-color:var(--black)}
+.filter-btn.active{color:var(--red);border-color:var(--red)}
+.work-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px}
+.work-card{position:relative;overflow:hidden;cursor:none;transition:opacity .3s}
+.work-card:nth-child(1){grid-column:span 7;aspect-ratio:4/3}
+.work-card:nth-child(2){grid-column:span 5;aspect-ratio:4/3}
+.work-card:nth-child(3){grid-column:span 4;aspect-ratio:3/4}
+.work-card:nth-child(4){grid-column:span 5;aspect-ratio:3/4}
+.work-card:nth-child(5){grid-column:span 3;aspect-ratio:3/4}
+.work-card:nth-child(6){grid-column:span 6;aspect-ratio:16/9}
+.work-card:nth-child(7){grid-column:span 6;aspect-ratio:16/9}
+.card-bg{position:absolute;inset:0;transition:transform .6s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;justify-content:center}
+.work-card:hover .card-bg{transform:scale(1.04)}
+.card-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .4s}
+.work-card:hover .card-overlay{background:rgba(0,0,0,.5)}
+.card-info{position:absolute;bottom:0;left:0;width:100%;padding:24px;transform:translateY(100%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.work-card:hover .card-info{transform:translateY(0)}
+.card-cat{font-family:var(--helv);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.card-name{font-family:var(--serif);font-size:clamp(18px,2vw,28px);font-weight:300;color:#fff;font-style:italic}
+.card-num{position:absolute;top:16px;right:16px;font-family:var(--helv);font-size:9px;letter-spacing:.1em;color:rgba(255,255,255,.3)}
+
+/* STATEMENT SECTION */
+#statement{padding:0;background:var(--black);min-height:60vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.statement-inner{padding:80px 48px;position:relative;z-index:1;width:100%}
+.statement-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.stmt-title{font-family:var(--helv-bold);font-size:clamp(40px,5.5vw,82px);font-weight:900;color:#fff;line-height:.95;letter-spacing:-.02em;text-transform:uppercase}
+.stmt-title em{color:var(--red);font-style:normal}
+.stmt-right{padding-top:40px}
+.stmt-right p{font-family:var(--helv);font-size:12px;color:rgba(255,255,255,.4);line-height:1.9;letter-spacing:.02em;margin-bottom:24px;max-width:400px}
+.stmt-anno{font-family:var(--helv);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-top:40px}
+.stmt-anno span{color:var(--red)}
+.stmt-line{width:40px;height:1px;background:var(--red);margin-bottom:24px}
+.stmt-bg-text{position:absolute;font-family:var(--serif);font-size:300px;font-weight:300;color:rgba(255,255,255,.02);top:50%;transform:translateY(-50%);right:-40px;white-space:nowrap;pointer-events:none;font-style:italic}
+
+/* ABOUT */
+#about{background:var(--cream);padding:120px 48px}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:start}
+.about-left .section-label{margin-bottom:40px}
+.about-statement{font-family:var(--serif);font-size:clamp(32px,4vw,56px);font-weight:300;line-height:1.1;font-style:italic;margin-bottom:48px}
+.about-statement em{color:var(--red)}
+.about-body{font-family:var(--helv);font-size:12px;line-height:1.9;color:rgba(13,13,13,.55);max-width:440px;letter-spacing:.02em}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:48px}
+.stat-block{background:var(--black);padding:32px;display:flex;flex-direction:column;gap:8px}
+.stat-num{font-family:var(--serif);font-size:48px;font-weight:300;color:#fff;line-height:1}
+.stat-num em{color:var(--red);font-style:italic}
+.stat-label{font-family:var(--helv);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.about-anno{font-family:var(--helv);font-size:9px;letter-spacing:.1em;color:var(--mid);line-height:1.9;text-transform:uppercase}
+.about-anno span{display:block;margin-bottom:2px}
+.disciplines{margin-top:64px}
+.disc-item{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid rgba(13,13,13,.12);cursor:none}
+.disc-item:first-child{border-top:1px solid rgba(13,13,13,.12)}
+.disc-name{font-family:var(--serif);font-size:clamp(20px,2.5vw,32px);font-weight:300;font-style:italic;transition:color .2s}
+.disc-num{font-family:var(--helv);font-size:9px;letter-spacing:.1em;color:var(--mid)}
+.disc-arrow{font-size:16px;color:var(--red);opacity:0;transform:translateX(-8px);transition:all .2s}
+.disc-item:hover .disc-arrow{opacity:1;transform:translateX(0)}
+.disc-item:hover .disc-name{color:var(--red)}
+
+/* CONTACT */
+#contact{background:var(--black);padding:120px 48px;position:relative;overflow:hidden}
+.contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:start;position:relative;z-index:1}
+.contact-left .section-label{color:rgba(255,255,255,.3)}
+.contact-title{font-family:var(--helv-bold);font-size:clamp(36px,5vw,80px);font-weight:900;color:#fff;line-height:.95;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:48px}
+.contact-title em{color:var(--red);font-style:normal}
+.contact-anno{font-family:var(--helv);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);line-height:1.9}
+.contact-anno a{color:rgba(255,255,255,.6);text-decoration:none}
+.contact-anno a:hover{color:var(--red)}
+.form-group{margin-bottom:32px}
+.form-group label{display:block;font-family:var(--helv);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:none;border:none;border-bottom:1px solid rgba(255,255,255,.15);padding:12px 0;color:#fff;font-family:var(--helv);font-size:13px;outline:none;transition:border-color .2s;appearance:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--red)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,.2);font-size:12px}
+.form-group textarea{resize:none;height:80px}
+.form-group select option{background:var(--black)}
+.submit-btn{display:inline-flex;align-items:center;gap:16px;background:var(--red);color:#fff;border:none;padding:16px 40px;font-family:var(--helv);font-size:10px;letter-spacing:.2em;text-transform:uppercase;cursor:none;transition:background .2s;margin-top:16px}
+.submit-btn:hover{background:#b82e10}
+.contact-bg-text{position:absolute;font-family:var(--serif);font-size:250px;font-weight:300;color:rgba(255,255,255,.02);bottom:-40px;right:-20px;white-space:nowrap;pointer-events:none;font-style:italic}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid rgba(255,255,255,.06);padding:32px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer p{font-family:var(--helv);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.2)}
+.footer-socials{display:flex;gap:32px}
+.footer-socials a{font-family:var(--helv);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.2);text-decoration:none}
+.footer-socials a:hover{color:var(--red)}
+
+/* CARD COLORS */
+.c1{background:#1e1c18}
+.c2{background:#2a2520}
+.c3{background:#1a2028}
+.c4{background:#251a1a}
+.c5{background:#1e2420}
+.c6{background:#201e2a}
+.c7{background:#241a20}
+.ci{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}
+.ci span{font-family:var(--helv);font-size:8px;letter-spacing:.2em;color:rgba(255,255,255,.12);text-transform:uppercase}
+.ci big{font-family:var(--serif);font-size:40px;color:rgba(255,255,255,.08);font-style:italic;font-weight:300}
+
+/* FADE */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav.site-nav{grid-template-columns:1fr;padding:0 24px}
+  .nav-links{display:none}
+  .nav-spacer{display:none}
+  #floatingBrief{padding:9px 16px;font-size:8px}
+  .hero-content{max-width:90%;padding:0 24px 80px}
+  .hero-sub{display:none}
+  .featured-inner{grid-template-columns:1fr}
+  .work-card{grid-column:span 12 !important;aspect-ratio:4/3 !important}
+  .statement-grid,.about-inner,.contact-inner{grid-template-columns:1fr;gap:48px}
+  section{padding:80px 24px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- FLOATING CTA -->
+<button id="floatingBrief" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Send a Brief</button>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="nav-logo">Koriwa Studio</div>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-spacer"></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-top">
+    <p class="hero-eyebrow">Creative Direction & Digital Studio — Casablanca</p>
+    <h1 class="hero-title">We build <em>brands</em> that move.</h1>
+    <div class="hero-ctas">
+      <a href="#work" class="hero-btn primary">Discover Our Projects →</a>
+      <a href="#contact" class="hero-btn accent">Send a Brief →</a>
+    </div>
+  </div>
+  <div class="carousel-wrap">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-slide">
+        <div class="slide-bg s1" style="background:#0a0a0a"><img src="https://raw.githubusercontent.com/koriwa-02/studio-portfolio/main/slide1.jpg" alt="Al Barad" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="slide-watermark" style="position:absolute">Al Barad</span></div>
+        <div class="slide-overlay"></div>
+        <span class="slide-num">01 / 06</span>
+        <span class="slide-tag">Featured</span>
+        <div class="slide-info"><p class="slide-cat">AI Visual Production</p><p class="slide-name">Al Barad Tea Campaign</p></div>
+      </div>
+      <div class="carousel-slide">
+        <div class="slide-bg s2"><span class="slide-watermark">Spectra</span></div>
+        <div class="slide-overlay"></div>
+        <span class="slide-num">02 / 06</span>
+        <div class="slide-info"><p class="slide-cat">Website</p><p class="slide-name">Spectra Building</p></div>
+      </div>
+      <div class="carousel-slide">
+        <div class="slide-bg s3" style="background:#0a0a0a"><img src="https://raw.githubusercontent.com/koriwa-02/studio-portfolio/main/slide3.jpg" alt="Calina" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"><span class="slide-watermark" style="position:absolute">Calina</span></div>
+        <div class="slide-overlay"></div>
+        <span class="slide-num">03 / 06</span>
+        <div class="slide-info"><p class="slide-cat">Branding · AI Editorial</p><p class="slide-name">Calina Earrings</p></div>
+      </div>
+      <div class="carousel-slide">
+        <div class="slide-bg s4" style="background:#0a0a0a"><img src="https://raw.githubusercontent.com/koriwa-02/studio-portfolio/main/slide4.jpg" alt="My Card" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="slide-watermark" style="position:absolute">My Card</span></div>
+        <div class="slide-overlay"></div>
+        <span class="slide-num">04 / 06</span>
+        <div class="slide-info"><p class="slide-cat">Web Application · SaaS</p><p class="slide-name">My Card — Digital Loyalty</p></div>
+      </div>
+      <div class="carousel-slide">
+        <div class="slide-bg s5" style="background:#0a0a0a"><img src="https://raw.githubusercontent.com/koriwa-02/studio-portfolio/main/slide5.jpg" alt="Catalina" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="slide-watermark" style="position:absolute">Catalina</span></div>
+        <div class="slide-overlay"></div>
+        <span class="slide-num">05 / 06</span>
+        <div class="slide-info"><p class="slide-cat">DTC Ads · Branding</p><p class="slide-name">Catalina Jewelry</p></div>
+      </div>
+      <div class="carousel-slide">
+        <div class="slide-bg s6" style="background:#0a0a0a"><img src="https://raw.githubusercontent.com/koriwa-02/studio-portfolio/main/slide6.jpg" alt="ASNA" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="slide-watermark" style="position:absolute">ASNA</span></div>
+        <div class="slide-overlay"></div>
+        <span class="slide-num">06 / 06</span>
+        <div class="slide-info"><p class="slide-cat">Short Commercial · AI</p><p class="slide-name">ASNA Earrings</p></div>
+      </div>
+    </div>
+    <div class="carousel-controls">
+      <div class="carousel-dots" id="carouselDots"></div>
+      <div class="carousel-counter"><strong id="currentSlide">01</strong> / <span id="totalSlides">06</span></div>
+      <div class="carousel-arrows">
+        <button class="arrow-btn" onclick="moveCarousel(-1)">←</button>
+        <button class="arrow-btn" onclick="moveCarousel(1)">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Website Design</div>
+    <div class="marquee-item">AI Photoshoots</div>
+    <div class="marquee-item">Brand Identity</div>
+    <div class="marquee-item">DTC Ad Creatives</div>
+    <div class="marquee-item">Web Applications</div>
+    <div class="marquee-item">Product Commercials</div>
+    <div class="marquee-item">Workflow Automation</div>
+    <div class="marquee-item">Website Design</div>
+    <div class="marquee-item">AI Photoshoots</div>
+    <div class="marquee-item">Brand Identity</div>
+    <div class="marquee-item">DTC Ad Creatives</div>
+    <div class="marquee-item">Web Applications</div>
+    <div class="marquee-item">Product Commercials</div>
+    <div class="marquee-item">Workflow Automation</div>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<section id="featured">
+  <div class="featured-inner">
+    <div class="featured-left">
+      <div class="featured-left-bg">Featured Project</div>
+      <div class="feat-num">01</div>
+      <div class="featured-left-content fade-in">
+        <p class="feat-tag">AI Visual Production — Campaign</p>
+        <h2 class="feat-title">Al Barad<br>Moroccan Tea</h2>
+        <p class="feat-desc">Full campaign visual production using AI-generated imagery. Product isolation, composite ad system, and brand world built from scratch.</p>
+        <a href="#" class="feat-link">View Project →</a>
+      </div>
+    </div>
+    <div class="featured-right">
+      <div class="featured-right-img">
+        <span class="img-label">Al Barad</span>
+        <span>Drop project image here</span>
+      </div>
+      <div class="feat-anno">
+        <p>AI-Generated<br>Visual System<br>——<br>Full Campaign</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK GRID -->
+<section id="work">
+  <div class="work-header fade-in">
+    <div>
+      <p class="section-label">Selected Work</p>
+      <h2 class="section-title">Projects.</h2>
+    </div>
+    <div class="work-filter">
+      <button class="filter-btn active" onclick="filterWork('all',this)">All</button>
+      <button class="filter-btn" onclick="filterWork('web',this)">Web</button>
+      <button class="filter-btn" onclick="filterWork('ai',this)">AI Visuals</button>
+      <button class="filter-btn" onclick="filterWork('brand',this)">Branding</button>
+      <button class="filter-btn" onclick="filterWork('ads',this)">DTC Ads</button>
+    </div>
+  </div>
+  <div class="work-grid" id="workGrid">
+    <div class="work-card" data-cat="brand">
+      <div class="card-bg c2"><div class="ci"><big>CAT</big><span>Jewelry Campaign</span></div></div>
+      <div class="card-overlay"></div>
+      <span class="card-num">01</span>
+      <div class="card-info"><p class="card-cat">Branding · AI Visuals</p><p class="card-name">Catalina Jewelry</p></div>
+    </div>
+    <div class="work-card" data-cat="web">
+      <div class="card-bg c3"><div class="ci"><big>SPT</big><span>Building Solutions</span></div></div>
+      <div class="card-overlay"></div>
+      <span class="card-num">02</span>
+      <div class="card-info"><p class="card-cat">Website</p><p class="card-name">Spectra Building</p></div>
+    </div>
+    <div class="work-card" data-cat="ads">
+      <div class="card-bg c4"><div class="ci"><big>ADS</big><span>DTC Campaign</span></div></div>
+      <div class="card-overlay"></div>
+      <span class="card-num">03</span>
+      <div class="card-info"><p class="card-cat">DTC Ads</p><p class="card-name">Meta Ad System</p></div>
+    </div>
+    <div class="work-card" data-cat="web">
+      <div class="card-bg c5"><div class="ci"><big>LYL</big><span>Loyalty Platform</span></div></div>
+      <div class="card-overlay"></div>
+      <span class="card-num">04</span>
+      <div class="card-info"><p class="card-cat">Web Application</p><p class="card-name">Koriwa Loyalty</p></div>
+    </div>
+    <div class="work-card" data-cat="ai">
+      <div class="card-bg c6"><div class="ci"><big>ALB</big><span>Moroccan Tea Brand</span></div></div>
+      <div class="card-overlay"></div>
+      <span class="card-num">05</span>
+      <div class="card-info"><p class="card-cat">AI Visuals · Brand</p><p class="card-name">Al Barad Tea</p></div>
+    </div>
+    <div class="work-card" data-cat="ads">
+      <div class="card-bg c7"><div class="ci"><big>UGC</big><span>Product Commercial</span></div></div>
+      <div class="card-overlay"></div>
+      <span class="card-num">06</span>
+      <div class="card-info"><p class="card-cat">Short Commercial</p><p class="card-name">ASNA Earring Campaign</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATEMENT -->
+<section id="statement">
+  <div class="statement-inner">
+    <div class="statement-grid">
+      <div class="stmt-left fade-in">
+        <h2 class="stmt-title">We don't<br>make assets.<br><em>We build<br>worlds.</em></h2>
+      </div>
+      <div class="stmt-right fade-in">
+        <div class="stmt-line"></div>
+        <p>Every project starts with a question: what does this brand actually feel like? Not what it looks like — what it feels like to be inside it.</p>
+        <p>From AI-generated campaign visuals to full-stack web applications, we collapse the distance between idea and execution.</p>
+        <div class="stmt-anno">Based in Casablanca — <span>Working globally</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="stmt-bg-text">Studio</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-left fade-in">
+      <p class="section-label">About the Studio</p>
+      <h2 class="about-statement">Creative direction<br>meets <em>technical</em><br>precision.</h2>
+      <p class="about-body">KORIWA STUDIO is a full-service creative agency based in Casablanca. We combine brand identity, AI-powered visual production, web development, and performance advertising under one roof — so nothing gets lost in translation between creative and execution.</p>
+      <div class="disciplines">
+        <div class="disc-item"><span class="disc-name">Brand Identity</span><span class="disc-num">01</span><span class="disc-arrow">→</span></div>
+        <div class="disc-item"><span class="disc-name">AI Visual Production</span><span class="disc-num">02</span><span class="disc-arrow">→</span></div>
+        <div class="disc-item"><span class="disc-name">Website & Web Apps</span><span class="disc-num">03</span><span class="disc-arrow">→</span></div>
+        <div class="disc-item"><span class="disc-name">DTC Ad Creatives</span><span class="disc-num">04</span><span class="disc-arrow">→</span></div>
+        <div class="disc-item"><span class="disc-name">Short Commercials</span><span class="disc-num">05</span><span class="disc-arrow">→</span></div>
+        <div class="disc-item"><span class="disc-name">Workflow Automation</span><span class="disc-num">06</span><span class="disc-arrow">→</span></div>
+      </div>
+    </div>
+    <div class="about-right fade-in">
+      <div class="stats-grid">
+        <div class="stat-block"><span class="stat-num">30<em>+</em></span><span class="stat-label">Projects Delivered</span></div>
+        <div class="stat-block"><span class="stat-num">6</span><span class="stat-label">Service Disciplines</span></div>
+        <div class="stat-block"><span class="stat-num"><em>MA</em></span><span class="stat-label">Based in Morocco</span></div>
+        <div class="stat-block"><span class="stat-num">24<em>h</em></span><span class="stat-label">Response Time</span></div>
+      </div>
+      <p class="about-anno">
+        <span>Sofiane Ouhammou — Creative Director</span>
+        <span>Previously: F&B Brand Founder</span>
+        <span>——</span>
+        <span>Fluent in Arabic · French · English</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-left fade-in">
+      <p class="section-label">Get in Touch</p>
+      <h2 class="contact-title">Let's build<br>something<br><em>real.</em></h2>
+      <p class="contact-anno">
+        Based in Casablanca, Morocco<br>
+        Available for projects globally<br><br>
+        <a href="mailto:studio@koriwa.ma">studio@koriwa.ma</a><br>
+        <a href="https://instagram.com/koriwa.studio" target="_blank">@koriwa.studio</a>
+      </p>
+    </div>
+    <div class="contact-right fade-in">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Full name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="email@company.com">
+      </div>
+      <div class="form-group">
+        <label>Service</label>
+        <select>
+          <option value="" disabled selected>Select a service</option>
+          <option>Brand Identity</option>
+          <option>AI Visual Production</option>
+          <option>Website / Web App</option>
+          <option>DTC Ad Creatives</option>
+          <option>Short Commercial</option>
+          <option>Full Studio Retainer</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell me about your project..."></textarea>
+      </div>
+      <button class="submit-btn">Send Message →</button>
+    </div>
+  </div>
+  <div class="contact-bg-text">Contact</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Koriwa Studio — All rights reserved</p>
+  <div class="footer-socials">
+    <a href="#">Instagram</a>
+    <a href="#">Behance</a>
+    <a href="#">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a,button,.work-card,.disc-item').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('expand'));
+});
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
+}, {threshold:.15});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+function filterWork(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.work-card').forEach(card => {
+    const show = cat === 'all' || card.dataset.cat === cat;
+    card.style.opacity = show ? '1' : '0.15';
+    card.style.pointerEvents = show ? 'auto' : 'none';
+  });
+}
+
+// CAROUSEL
+const track = document.getElementById('carouselTrack');
+const slides = document.querySelectorAll('.carousel-slide');
+const dotsEl = document.getElementById('carouselDots');
+const currentEl = document.getElementById('currentSlide');
+let currentIdx = 0;
+let totalGroups = 0;
+
+function getPerView() {
+  if(window.innerWidth <= 700) return 1;
+  if(window.innerWidth <= 1100) return 2;
+  return 3;
+}
+
+function setupCarousel() {
+  const perView = getPerView();
+  totalGroups = Math.max(1, slides.length - perView + 1);
+  dotsEl.innerHTML = '';
+  for(let i=0; i<totalGroups; i++){
+    const d = document.createElement('button');
+    d.className = 'dot' + (i===0?' active':'');
+    d.onclick = () => goToSlide(i);
+    dotsEl.appendChild(d);
+  }
+  goToSlide(0);
+}
+
+function goToSlide(idx) {
+  if(idx < 0) idx = totalGroups - 1;
+  if(idx >= totalGroups) idx = 0;
+  currentIdx = idx;
+  const slide = slides[0];
+  const slideW = slide.getBoundingClientRect().width + 24;
+  track.style.transform = `translateX(-${idx * slideW}px)`;
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  currentEl.textContent = String(idx+1).padStart(2,'0');
+}
+
+function moveCarousel(dir) { goToSlide(currentIdx + dir); }
+
+setupCarousel();
+window.addEventListener('resize', setupCarousel);
+
+// AUTO-PLAY
+let autoplay = setInterval(() => moveCarousel(1), 5000);
+document.querySelector('.carousel-wrap').addEventListener('mouseenter', () => clearInterval(autoplay));
+document.querySelector('.carousel-wrap').addEventListener('mouseleave', () => {
+  autoplay = setInterval(() => moveCarousel(1), 5000);
+});
+</script>
+</body>
+</html>

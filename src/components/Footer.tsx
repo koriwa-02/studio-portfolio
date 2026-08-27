@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/lib/content";
+import { assetPath } from "@/lib/asset";
 
 const socials = [
   { label: "Instagram", href: "https://instagram.com/koriwastudio" },
@@ -14,7 +15,7 @@ export default function Footer() {
         <div className="flex flex-col justify-between gap-10 border-b border-paper/15 pb-12 md:flex-row">
           <div>
             <Image
-              src="/brand/logo-mark.svg"
+              src={assetPath("/brand/koriwa-studio.png")}
               alt="Koriwa Studio"
               width={64}
               height={33}

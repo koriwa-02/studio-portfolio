@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { workItems, workSlug } from "@/lib/content";
+import { assetPath } from "@/lib/asset";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -60,9 +61,9 @@ export default async function ProjectPage({ params }: PageProps) {
 
           <div className="mt-14 overflow-hidden bg-ink md:mt-20">
             {project.video ? (
-              <video className="block aspect-[16/9] h-auto w-full object-cover" src={project.video} poster={project.image} autoPlay muted loop playsInline />
+              <video className="block aspect-[16/9] h-auto w-full object-cover" src={assetPath(project.video)} poster={project.image ? assetPath(project.image) : undefined} autoPlay muted loop playsInline />
             ) : project.image ? (
-              <Image src={project.image} alt={`${project.title} project artwork`} width={1600} height={1000} className="block h-auto w-full object-cover" priority />
+              <Image src={assetPath(project.image)} alt={`${project.title} project artwork`} width={1600} height={1000} className="block h-auto w-full object-cover" priority />
             ) : null}
           </div>
 

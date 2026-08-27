@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  env: {
+    NEXT_PUBLIC_BASE_PATH: process.env.GITHUB_ACTIONS === "true" ? "/studio-portfolio" : "",
+  },
   turbopack: {
     root: path.join(__dirname),
   },

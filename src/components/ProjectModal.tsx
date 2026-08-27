@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { workItems } from "@/lib/content";
+import { assetPath } from "@/lib/asset";
 
 type Project = (typeof workItems)[number];
 
@@ -135,7 +136,7 @@ export default function ProjectModal({
               ) : (
                 <>
                   <Image
-                    src="/brand/logo-mark.svg"
+                    src={assetPath("/brand/koriwa-studio.png")}
                     alt=""
                     width={200}
                     height={103}
@@ -244,7 +245,7 @@ export default function ProjectModal({
                       }}
                     >
                       <Image
-                        src="/brand/logo-mark.svg"
+                        src={assetPath("/brand/koriwa-studio.png")}
                         alt=""
                         width={80}
                         height={41}

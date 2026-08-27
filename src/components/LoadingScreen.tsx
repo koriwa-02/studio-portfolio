@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { assetPath } from "@/lib/asset";
 
 export default function LoadingScreen() {
   const [visible, setVisible] = useState(true);
@@ -70,7 +71,7 @@ export default function LoadingScreen() {
     >
       <div className="site-loader-inner">
         <img
-          src="/brand/koriwa-studio.png"
+          src={assetPath("/brand/koriwa-studio.png")}
           alt="Koriwa Studio"
           width={420}
           height={280}

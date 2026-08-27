@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/useGsap";
 import { workItems, workSlug } from "@/lib/content";
+import { assetPath } from "@/lib/asset";
 
 const filters = ["All", ...Array.from(new Set(workItems.map((item) => item.category.split(" / ")[0])))];
 
@@ -95,8 +96,8 @@ export default function Work() {
                   {item.video ? (
                     <video
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[600ms] ease-[var(--ease-out)] group-hover:scale-105"
-                      src={item.video}
-                      poster={item.image}
+                      src={assetPath(item.video)}
+                      poster={item.image ? assetPath(item.image) : undefined}
                       autoPlay
                       muted
                       loop
@@ -107,7 +108,7 @@ export default function Work() {
                     />
                   ) : (
                     <img
-                      src={item.image}
+                      src={assetPath(item.image)}
                       alt=""
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-[600ms] ease-[var(--ease-out)] group-hover:scale-105"
                       loading="lazy"

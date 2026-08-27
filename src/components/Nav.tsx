@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type CSSProperties } from "react";
 import { navLinks } from "@/lib/content";
+import { assetPath } from "@/lib/asset";
 
 const leftNavLinks = [
   { label: "Koriwa", href: "#top" },
@@ -59,7 +60,7 @@ export default function Nav() {
           className="absolute top-1/2 left-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center"
         >
           <Image
-            src="/brand/koriwa-studio.png"
+            src={assetPath("/brand/koriwa-studio.png")}
             alt="Koriwa Studio"
             width={120}
             height={80}

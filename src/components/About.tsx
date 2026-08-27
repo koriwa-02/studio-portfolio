@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { assetPath } from "@/lib/asset";
 import { useRef } from "react";
 import { Cursor } from "@phosphor-icons/react";
 import { gsap, useGSAP } from "@/lib/useGsap";
@@ -118,7 +119,7 @@ export default function About() {
               style={{ transform: "rotate(1deg)" }}
             >
               <Image
-                src="/about/founder.jpg"
+                src={assetPath("/about/founder.jpg")}
                 alt="Sofiane Ouhemmou, founder of Koriwa Studio"
                 fill
                 sizes="(max-width: 768px) 100vw, 420px"
@@ -139,7 +140,7 @@ export default function About() {
 
               <div className="absolute left-5 top-5">
                 <Image
-                  src="/brand/koriwa-studio.png"
+                  src={assetPath("/brand/koriwa-studio.png")}
                   alt="Koriwa Studio"
                   width={1536}
                   height={1024}

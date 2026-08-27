@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { gsap, useGSAP } from "@/lib/useGsap";
 import ContactFormModal from "./ContactFormModal";
+import { assetPath } from "@/lib/asset";
 
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null);
@@ -81,7 +82,7 @@ export default function Hero() {
         </div>
 
         <Image
-          src="/hero/koriwa-founder-hero-v2.jpg"
+          src={assetPath("/hero/koriwa-founder-hero-v2.jpg")}
           alt="Creative director working at a design studio desk"
           width={1023}
           height={1279}

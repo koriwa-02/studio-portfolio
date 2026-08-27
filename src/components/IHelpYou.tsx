@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/useGsap";
 import { helpPoints } from "@/lib/content";
+import { assetPath } from "@/lib/asset";
 
 export default function IHelpYou() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -72,8 +73,7 @@ export default function IHelpYou() {
         <video
           ref={videoRef}
           className="help-video absolute inset-0 h-full w-full scale-[1.08] object-cover"
-          src="/videos/i-help-you-bg.mp4"
-          poster="/videos/i-help-you-poster.jpg"
+          src={assetPath("/videos/i-help-you-bg.mp4")}
           autoPlay
           muted
           loop

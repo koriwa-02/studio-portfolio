@@ -3,6 +3,7 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   output: "export",
+  trailingSlash: true,
   basePath: process.env.GITHUB_ACTIONS === "true" ? "/studio-portfolio" : "",
   images: {
     unoptimized: true,

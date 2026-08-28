@@ -1,12 +1,51 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/useGsap";
 import { workItems, workSlug } from "@/lib/content";
 import { assetPath } from "@/lib/asset";
 
 const filters = ["All", ...Array.from(new Set(workItems.map((item) => item.category.split(" / ")[0])))];
+
+function WorkVideo({ src, poster }: { src: string; poster?: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => undefined);
+        } else {
+          video.pause();
+        }
+      },
+      { rootMargin: "240px 0px" },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[600ms] ease-[var(--ease-out)] group-hover:scale-105"
+      src={src}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      preload="none"
+      onError={(event) => {
+        event.currentTarget.style.display = "none";
+      }}
+    />
+  );
+}
 
 export default function Work() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -94,17 +133,9 @@ export default function Work() {
               {(item.video || item.image) && (
                 <>
                   {item.video ? (
-                    <video
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[600ms] ease-[var(--ease-out)] group-hover:scale-105"
+                    <WorkVideo
                       src={assetPath(item.video)}
                       poster={item.image ? assetPath(item.image) : undefined}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
                     />
                   ) : (
                     <img

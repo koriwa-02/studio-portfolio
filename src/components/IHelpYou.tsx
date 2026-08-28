@@ -74,6 +74,7 @@ export default function IHelpYou() {
           ref={videoRef}
           className="help-video absolute inset-0 h-full w-full scale-[1.08] object-cover"
           src={assetPath("/videos/i-help-you-bg.mp4")}
+          poster={assetPath("/videos/i-help-you-bg-poster.webp")}
           autoPlay
           muted
           loop

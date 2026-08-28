@@ -921,18 +921,18 @@ button {
   }
 
   .reference-hero-main {
-    position: relative;
-    top: auto;
+    position: sticky;
+    top: 0;
     display: flex;
-    height: auto;
+    height: 100svh;
     min-height: 0;
     flex-direction: column;
     padding: 112px 20px 0;
   }
 
   .reference-hero {
-    min-height: 100svh;
-    height: auto;
+    min-height: 180svh;
+    height: 180svh;
   }
 
   .hero-build-panel {
@@ -1057,11 +1057,12 @@ button {
 
 
   .reference-hero-meta {
-    position: relative;
+    position: absolute;
     right: auto;
+    top: calc(100svh - 48px);
     bottom: auto;
     left: auto;
-    margin: 2rem 20px 0;
+    margin: 0 20px;
     grid-template-columns: 1fr auto;
     gap: 5px 12px;
     font-size: 7px;

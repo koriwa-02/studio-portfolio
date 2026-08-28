@@ -927,7 +927,7 @@ button {
     height: 100svh;
     min-height: 0;
     flex-direction: column;
-    padding: 112px 20px 0;
+    padding: 88px 12px 0;
   }
 
   .reference-hero {
@@ -971,8 +971,9 @@ button {
   .reference-hero-mobile-card {
     position: relative;
     order: 1;
-    width: min(100%, 330px);
+    width: min(100%, 380px);
     margin: 0 auto;
+    overflow: visible;
   }
 
   .reference-hero-word {
@@ -1010,11 +1011,24 @@ button {
     right: 18px;
     bottom: 18px;
     left: 18px;
+    max-width: none;
   }
 
   .reference-hero-copy-label,
   .reference-hero-copy .hero-sub {
     color: var(--reference-bg);
+  }
+
+  .reference-hero-copy::before {
+    position: absolute;
+    right: -18px;
+    bottom: -18px;
+    left: -18px;
+    z-index: -1;
+    height: 170px;
+    content: "";
+    background: linear-gradient(to top, rgb(17 17 17 / 0.72), transparent);
+    pointer-events: none;
   }
 
   .reference-hero-copy .hero-buttons {

@@ -33,9 +33,14 @@ export default function Hero() {
         .from(".reference-hero-quote", { opacity: 0, y: 16, duration: 0.6 }, "-=0.35")
       .from(".hero-sub", { opacity: 0, y: 16, duration: 0.6 }, "-=0.4")
         .from(".hero-buttons", { opacity: 0, y: 16, duration: 0.6 }, "-=0.4")
+      .from(".hero-services", { opacity: 0, y: 12, duration: 0.45 }, "-=0.25")
+      .from(".reference-hero-portrait-wrap", { opacity: 0, y: 18, duration: 0.6 }, "-=0.25")
       .from(".hero-scroll", { opacity: 0, duration: 0.6 }, "-=0.3");
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const mobile = window.matchMedia("(max-width: 767px)").matches;
+      if (mobile) return;
 
       gsap.set(".hero-build-panel", { opacity: 0, yPercent: 8 });
 
@@ -48,35 +53,19 @@ export default function Hero() {
         },
       });
 
-      const mobile = window.matchMedia("(max-width: 767px)").matches;
-
-      if (mobile) {
-        scrollTransition
-          .to(".reference-hero-mobile-card", { yPercent: -115, scale: 0.72, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)
-          .fromTo(
-            ".hero-build-line",
-            { yPercent: 100, opacity: 0 },
-            { yPercent: 0, opacity: 1, stagger: 0.08, ease: "power3.out" },
-            0.24,
-          );
-      } else {
-        scrollTransition
-          .to(".reference-hero-image", { yPercent: -125, scale: 0.86, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".reference-hero-copy", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".reference-hero-quote", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)
-          .fromTo(
-            ".hero-build-line",
-            { yPercent: 100, opacity: 0 },
-            { yPercent: 0, opacity: 1, stagger: 0.08, ease: "power3.out" },
-            0.24,
-          );
-      }
+      scrollTransition
+        .to(".reference-hero-image", { yPercent: -125, scale: 0.86, opacity: 0, ease: "power2.inOut" }, 0)
+        .to(".reference-hero-copy", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
+        .to(".reference-hero-quote", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
+        .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
+        .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
+        .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)
+        .fromTo(
+          ".hero-build-line",
+          { yPercent: 100, opacity: 0 },
+          { yPercent: 0, opacity: 1, stagger: 0.08, ease: "power3.out" },
+          0.24,
+        );
 
     },
     { scope: rootRef },
@@ -89,6 +78,11 @@ export default function Hero() {
       className="reference-hero relative flex min-h-[calc(100dvh-96px)] flex-col overflow-visible bg-paper text-ink"
     >
       <div className="reference-hero-main">
+        <div className="hero-eyebrow reference-hero-eyebrow">
+          <span aria-hidden="true" />
+          <p>Bold creative for brands<br />with something to say.</p>
+        </div>
+
         <h1 className="reference-hero-word" aria-label="KORIWA">
           {[..."KORIWA"].map((letter, index) => (
             <span className="hero-word-letter" key={`${letter}-${index}`} aria-hidden="true">
@@ -101,7 +95,8 @@ export default function Hero() {
           <div className="reference-hero-quote">
             <blockquote>
               <span className="reference-hero-quote-mark">“</span>
-              We don’t decorate brands. We give them presence.
+              <span>We don’t decorate brands. </span><span>We give them </span>
+              <em>presence.</em>
               <span className="reference-hero-quote-mark">”</span>
             </blockquote>
           </div>
@@ -117,32 +112,41 @@ export default function Hero() {
                 onClick={() => setContactOpen(true)}
                 className="btn-press reference-hero-cta bg-red text-paper"
               >
-                Start a Project
+                Start a Project <span className="hero-mobile-arrow" aria-hidden="true">→</span>
               </button>
               <a href="#work" className="btn-press reference-hero-link">
-                View Our Work
+                View Our Work <span className="hero-mobile-arrow" aria-hidden="true">→</span>
               </a>
             </div>
           </div>
 
-          <Image
-            src={assetPath("/hero/koriwa-founder-hero-v2.jpg")}
-            alt="Creative director working at a design studio desk"
-            width={1023}
-            height={1279}
-            priority
-            sizes="(max-width: 768px) 94vw, 26vw"
-            className="reference-hero-image"
-          />
-          <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/hero/koriwa-founder-mobile.png`}
-            alt="Creative director working at a design studio desk"
-            width={941}
-            height={1672}
-            priority
-            sizes="100vw"
-            className="reference-hero-image reference-hero-image-mobile"
-          />
+          <div className="reference-hero-portrait-wrap">
+            <span className="reference-hero-shape reference-hero-shape-one" aria-hidden="true" />
+            <span className="reference-hero-shape reference-hero-shape-two" aria-hidden="true" />
+            <span className="reference-hero-outline" aria-hidden="true">KORIWA</span>
+            <Image
+              src={assetPath("/hero/koriwa-founder-hero-v2.jpg")}
+              alt="Creative director working at a design studio desk"
+              width={1023}
+              height={1279}
+              priority
+              sizes="(max-width: 768px) 94vw, 26vw"
+              className="reference-hero-image"
+            />
+            <Image
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/hero/koriwa-founder-mobile.png`}
+              alt="Creative director working at a design studio desk"
+              width={941}
+              height={1672}
+              priority
+              sizes="100vw"
+              className="reference-hero-image reference-hero-image-mobile"
+            />
+          </div>
+
+          <div className="hero-services" aria-label="Services">
+            <span>Brand identity</span><i aria-hidden="true">•</i><span>Web design</span><i aria-hidden="true">•</i><span>Content</span><i aria-hidden="true">•</i><span>Film &amp; motion</span>
+          </div>
         </div>
 
         <div className="hero-build-panel">
@@ -165,6 +169,11 @@ export default function Hero() {
           <span>Brand, web &amp; film</span>
         </div>
         <span>(01)</span>
+      </div>
+
+      <div className="reference-hero-scroll-cue hero-scroll">
+        <span>Scroll to explore</span>
+        <i aria-hidden="true" />
       </div>
 
       <div className="reference-hero-footer" aria-hidden="true">Koriwa Studio</div>

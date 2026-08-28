@@ -134,6 +134,15 @@ export default function Hero() {
             sizes="(max-width: 768px) 94vw, 26vw"
             className="reference-hero-image"
           />
+          <Image
+            src={assetPath("/hero/koriwa-founder-mobile.png")}
+            alt="Creative director working at a design studio desk"
+            width={941}
+            height={1672}
+            priority
+            sizes="100vw"
+            className="reference-hero-image reference-hero-image-mobile"
+          />
         </div>
 
         <div className="hero-build-panel">

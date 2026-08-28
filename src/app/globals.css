@@ -759,6 +759,10 @@ button {
   object-position: center center;
 }
 
+.reference-hero-image-mobile {
+  display: none;
+}
+
 .reference-hero-image-mark {
   position: absolute;
   right: 10px;
@@ -927,7 +931,7 @@ button {
     height: 100svh;
     min-height: 0;
     flex-direction: column;
-    padding: 88px 12px 0;
+    padding: 0;
   }
 
   .reference-hero {
@@ -956,11 +960,12 @@ button {
   }
 
   .reference-hero-image {
-    position: relative;
+    position: absolute;
     top: auto;
     left: auto;
     z-index: 1;
     order: initial;
+    display: none;
     width: 100%;
     height: auto;
     margin: 0;
@@ -969,11 +974,23 @@ button {
   }
 
   .reference-hero-mobile-card {
-    position: relative;
+    position: absolute;
+    inset: 0;
     order: 1;
-    width: min(100%, 380px);
-    margin: 0 auto;
+    width: 100%;
+    height: 100svh;
+    margin: 0;
     overflow: visible;
+  }
+
+  .reference-hero-image-mobile {
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    aspect-ratio: auto;
+    object-position: center top;
   }
 
   .reference-hero-word {
@@ -990,6 +1007,7 @@ button {
     line-height: 0.8;
     text-align: center;
     transform: none;
+    display: none;
   }
 
   .reference-hero-plus {

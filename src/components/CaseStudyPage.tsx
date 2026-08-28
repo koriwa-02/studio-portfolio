@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { assetPath } from "@/lib/asset";
 import { projectImageAlt, projectRoute, type ProjectCaseStudy } from "@/lib/projects";
+import CatalogPreview from "@/components/CatalogPreview";
 
 type CaseStudyPageProps = {
   project: ProjectCaseStudy;
@@ -42,7 +43,7 @@ function ProjectMedia({ project, priority = false }: { project: ProjectCaseStudy
 
 function Gallery({ project }: { project: ProjectCaseStudy }) {
   const gallery = project.gallery?.length ? project.gallery : [];
-  if (!gallery.length && !project.beforeImage && !project.afterImage) return null;
+  if (!gallery.length && !(project.beforeImage && project.afterImage)) return null;
 
   return (
     <div className="mt-14 grid gap-5 md:grid-cols-2">
@@ -115,6 +116,7 @@ export default function CaseStudyPage({ project, nextProject }: CaseStudyPagePro
             <section className="case-study-section border-t border-ink/15 py-16 md:py-24" aria-labelledby="direction-heading">
               <div className="grid gap-8 md:grid-cols-12 md:gap-12"><div className="md:col-span-4"><p className="case-study-index">04 — Design direction</p></div><div className="md:col-span-8"><h2 id="direction-heading" className="case-study-heading">A visual language with room to breathe.</h2><p className="case-study-copy">{project.designDirection}</p></div></div>
               <Gallery project={project} />
+              {project.catalogPdf && <CatalogPreview pdf={project.catalogPdf} />}
             </section>
 
             <section className="case-study-section grid gap-8 border-t border-ink/15 py-16 md:grid-cols-12 md:gap-12 md:py-24" aria-labelledby="process-heading">

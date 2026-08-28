@@ -23,6 +23,7 @@ export type ProjectCaseStudy = WorkItem & {
   processBody: string;
   mobileExperience: string;
   nextSlug: string;
+  catalogPdf?: string;
 };
 
 export function projectSlug(project: Pick<WorkItem, "title" | "category">) {
@@ -87,6 +88,7 @@ function buildProject(project: WorkItem, index: number): ProjectCaseStudy {
     processBody: process.body,
     mobileExperience: process.mobile,
     nextSlug: projectSlug(workItems[(index + 1) % workItems.length]),
+    catalogPdf: slug === "zidalum-catalog-design" ? "/work/zidalum-catalog/zidalum-catalog.pdf" : undefined,
   };
 }
 

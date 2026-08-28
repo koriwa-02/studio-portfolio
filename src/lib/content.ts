@@ -158,7 +158,6 @@ export const workItems = [
     color: "#ff2e17",
     image: "/work/catalog-design.jpg",
     beforeImage: "/work/zidalum-before.jpg",
-    afterImage: "/work/zidalum-after.jpg",
     details:
       "A full product catalog designed for Zidalum — layout system, typography and photography direction built to make every page easy to scan and hard to put down.",
     challenge:
@@ -242,7 +241,6 @@ export const workItems = [
     color: "#0a0a0a",
     image: "/work/spectra-catalog.jpg",
     beforeImage: "/work/spectra-catalog-before.jpg",
-    afterImage: "/work/spectra-catalog-after.jpg",
     details:
       "A product catalog for Spectra — extending their digital identity into a print system that carries the same energy onto the page.",
     challenge:
@@ -337,7 +335,10 @@ export const workItems = [
   },
 ];
 
-export type WorkItem = (typeof workItems)[number];
+export type WorkItem = (typeof workItems)[number] & {
+  beforeImage?: string;
+  afterImage?: string;
+};
 
 export const helpPoints = [
   "Build an online presence that actually gets you noticed.",

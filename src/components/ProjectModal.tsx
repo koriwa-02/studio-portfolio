@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { workItems } from "@/lib/content";
+import type { WorkItem } from "@/lib/content";
 import { assetPath } from "@/lib/asset";
 
-type Project = (typeof workItems)[number];
+type Project = WorkItem;
 
 function BeforeAfter({ project }: { project: Project }) {
   const [position, setPosition] = useState(50);

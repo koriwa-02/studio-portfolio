@@ -81,45 +81,44 @@ export default function Hero() {
           ))}
         </h1>
 
-        <div className="reference-hero-quote">
-          <blockquote>
-            <span className="reference-hero-quote-mark">“</span>
-            We don’t decorate brands. We give them presence.
-            <span className="reference-hero-quote-mark">”</span>
-          </blockquote>
-        </div>
-
-        <div className="reference-hero-copy">
-          <p className="reference-hero-copy-label">Creative partner for brands</p>
-          <p className="hero-sub">
-            Brand identity, web, content and film for brands who refuse to blend in
-          </p>
-          <div className="hero-buttons">
-          <button
-            type="button"
-            onClick={() => setContactOpen(true)}
-            className="btn-press reference-hero-cta bg-red text-paper"
-          >
-            Start a Project
-          </button>
-          <a
-            href="#work"
-            className="btn-press reference-hero-link"
-          >
-            View Our Work
-          </a>
+        <div className="reference-hero-mobile-card">
+          <div className="reference-hero-quote">
+            <blockquote>
+              <span className="reference-hero-quote-mark">“</span>
+              We don’t decorate brands. We give them presence.
+              <span className="reference-hero-quote-mark">”</span>
+            </blockquote>
           </div>
-        </div>
 
-        <Image
-          src={assetPath("/hero/koriwa-founder-hero-v2.jpg")}
-          alt="Creative director working at a design studio desk"
-          width={1023}
-          height={1279}
-          priority
-          sizes="(max-width: 768px) 94vw, 26vw"
-          className="reference-hero-image"
-        />
+          <div className="reference-hero-copy">
+            <p className="reference-hero-copy-label">Creative partner for brands</p>
+            <p className="hero-sub">
+              Brand identity, web, content and film for brands who refuse to blend in
+            </p>
+            <div className="hero-buttons">
+              <button
+                type="button"
+                onClick={() => setContactOpen(true)}
+                className="btn-press reference-hero-cta bg-red text-paper"
+              >
+                Start a Project
+              </button>
+              <a href="#work" className="btn-press reference-hero-link">
+                View Our Work
+              </a>
+            </div>
+          </div>
+
+          <Image
+            src={assetPath("/hero/koriwa-founder-hero-v2.jpg")}
+            alt="Creative director working at a design studio desk"
+            width={1023}
+            height={1279}
+            priority
+            sizes="(max-width: 768px) 94vw, 26vw"
+            className="reference-hero-image"
+          />
+        </div>
 
         <div className="hero-build-panel">
           <p className="hero-build-eyebrow">—&nbsp; Let&apos;s build something great &nbsp;—</p>

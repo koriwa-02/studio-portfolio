@@ -35,7 +35,7 @@ export default function Footer() {
                 {navLinks.map((link) => (
                   <li key={link.href}>
                     <Link
-                      href={link.href}
+                      href={`/${link.href}`}
                       className="text-sm font-bold uppercase tracking-wide text-paper/80 transition-colors duration-200 ease-[var(--ease-out)] hover:text-red"
                     >
                       {link.label}
@@ -80,7 +80,7 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-4 pt-6 text-xs text-paper/40 md:flex-row">
           <span>© {new Date().getFullYear()} Koriwa Studio. All rights reserved.</span>
           <Link
-            href="#top"
+            href="/#top"
             className="font-bold uppercase tracking-[0.15em] transition-colors duration-200 ease-[var(--ease-out)] hover:text-red"
           >
             Back to top ↑

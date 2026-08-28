@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, type CSSProperties } from "react";
 import { navLinks } from "@/lib/content";
 import { assetPath } from "@/lib/asset";
@@ -26,8 +27,10 @@ function FlipLabel({ label }: { label: string }) {
 }
 
 export default function Nav() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [activeHref, setActiveHref] = useState("#top");
+  const sectionHref = (href: string) => pathname === "/" ? href : `/${href}`;
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
@@ -56,7 +59,7 @@ export default function Nav() {
     <header className="reference-nav absolute top-0 right-0 left-0 z-50 border-0 bg-transparent">
       <div className="relative mx-auto flex min-h-[84px] max-w-7xl items-center justify-between px-6 py-5 md:min-h-[96px] md:px-10 md:py-6">
         <Link
-          href="#top"
+          href={sectionHref("#top")}
           className="absolute top-1/2 left-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center"
         >
           <Image
@@ -77,7 +80,7 @@ export default function Nav() {
           {leftNavLinks.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={sectionHref(link.href)}
               aria-current={activeHref === link.href ? "page" : undefined}
               aria-label={link.label}
               className={`nav-flip-link py-1 font-display text-xs font-bold tracking-[0.15em] uppercase transition-colors duration-200 ease-[var(--ease-out)] hover:text-red ${
@@ -96,7 +99,7 @@ export default function Nav() {
           {rightNavLinks.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={sectionHref(link.href)}
               aria-current={activeHref === link.href ? "page" : undefined}
               aria-label={link.label}
               className={`nav-flip-link py-1 font-display text-xs font-bold tracking-[0.15em] uppercase transition-colors duration-200 ease-[var(--ease-out)] hover:text-red ${
@@ -140,7 +143,7 @@ export default function Nav() {
           {navLinks.map((link, i) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={sectionHref(link.href)}
               onClick={() => setOpen(false)}
               style={{ transitionDelay: `${i * 40}ms` }}
               className={`reference-mobile-menu-link group flex items-baseline gap-4 font-display transition-[opacity,transform] duration-500 ease-[var(--ease-out)] ${

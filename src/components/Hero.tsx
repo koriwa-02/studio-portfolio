@@ -135,7 +135,7 @@ export default function Hero() {
             className="reference-hero-image"
           />
           <Image
-            src={assetPath("/hero/koriwa-founder-mobile.png")}
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/hero/koriwa-founder-mobile.png`}
             alt="Creative director working at a design studio desk"
             width={941}
             height={1672}

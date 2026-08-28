@@ -9,9 +9,6 @@ export const metadata: Metadata = {
   title: "KORIWA Studio — Web Design, Branding & Digital Experiences",
   description:
     "KORIWA Studio is a creative digital studio in Morocco specializing in web design, branding, graphic design and digital experiences for ambitious businesses and brands.",
-  alternates: { canonical: absoluteUrl("/") },
-  openGraph: { title: "KORIWA Studio — Web Design, Branding & Digital Experiences", description: "Web design, branding and digital experiences by KORIWA Studio.", url: absoluteUrl("/"), siteName: SITE_NAME, type: "website", images: [{ url: absoluteUrl("/brand/koriwa-studio.png"), alt: "KORIWA Studio" }] },
-  twitter: { card: "summary_large_image", title: "KORIWA Studio — Web Design, Branding & Digital Experiences", description: "Web design, branding and digital experiences by KORIWA Studio.", images: [absoluteUrl("/brand/koriwa-studio.png")] },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

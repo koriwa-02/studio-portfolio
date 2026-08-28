@@ -946,15 +946,15 @@ button {
   }
 
   .reference-hero-image {
-    top: 14%;
-    width: clamp(220px, 68vw, 330px);
+    top: 12%;
+    width: clamp(200px, 60vw, 280px);
     height: auto;
     aspect-ratio: 4 / 5;
   }
 
   .reference-hero-word {
-    top: calc(14% + min(60vw, 312.5px));
-    font-size: clamp(3.5rem, 19vw, 7rem);
+    top: 76%;
+    font-size: clamp(4rem, 21vw, 7rem);
     letter-spacing: -0.16em;
   }
 
@@ -967,14 +967,20 @@ button {
   .reference-hero-copy {
     left: auto;
     right: 18px;
-    top: 40%;
-    width: min(145px, calc(100vw - 230px));
+    top: 58%;
+    width: calc(50% - 27px);
+  }
+
+  .reference-hero-copy .hero-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .reference-hero-quote {
-    top: 40%;
+    top: 58%;
     left: 18px;
-    width: 100px;
+    width: calc(50% - 27px);
   }
 
   .reference-hero-quote blockquote {
@@ -986,7 +992,7 @@ button {
     grid-template-columns: 1fr auto;
     gap: 5px 12px;
     font-size: 7px;
-    bottom: 15%;
+    bottom: 6%;
   }
 
   .reference-hero-meta-stack {

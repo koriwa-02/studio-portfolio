@@ -48,19 +48,35 @@ export default function Hero() {
         },
       });
 
-      scrollTransition
-        .to(".reference-hero-image", { yPercent: -125, scale: 0.86, opacity: 0, ease: "power2.inOut" }, 0)
-        .to(".reference-hero-copy", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
-        .to(".reference-hero-quote", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
-        .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
-        .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
-        .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)
-        .fromTo(
-          ".hero-build-line",
-          { yPercent: 100, opacity: 0 },
-          { yPercent: 0, opacity: 1, stagger: 0.08, ease: "power3.out" },
-          0.24,
-        );
+      const mobile = window.matchMedia("(max-width: 767px)").matches;
+
+      if (mobile) {
+        scrollTransition
+          .to(".reference-hero-mobile-card", { yPercent: -115, scale: 0.9, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)
+          .fromTo(
+            ".hero-build-line",
+            { yPercent: 100, opacity: 0 },
+            { yPercent: 0, opacity: 1, stagger: 0.08, ease: "power3.out" },
+            0.24,
+          );
+      } else {
+        scrollTransition
+          .to(".reference-hero-image", { yPercent: -125, scale: 0.86, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".reference-hero-copy", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".reference-hero-quote", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)
+          .fromTo(
+            ".hero-build-line",
+            { yPercent: 100, opacity: 0 },
+            { yPercent: 0, opacity: 1, stagger: 0.08, ease: "power3.out" },
+            0.24,
+          );
+      }
 
     },
     { scope: rootRef },

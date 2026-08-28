@@ -81,16 +81,6 @@ export default function Hero() {
           ))}
         </h1>
 
-        <Image
-          src={assetPath("/hero/koriwa-founder-hero-v2.jpg")}
-          alt="Creative director working at a design studio desk"
-          width={1023}
-          height={1279}
-          priority
-          sizes="(max-width: 768px) 48vw, 26vw"
-          className="reference-hero-image"
-        />
-
         <div className="reference-hero-quote">
           <blockquote>
             <span className="reference-hero-quote-mark">“</span>
@@ -120,6 +110,16 @@ export default function Hero() {
           </a>
           </div>
         </div>
+
+        <Image
+          src={assetPath("/hero/koriwa-founder-hero-v2.jpg")}
+          alt="Creative director working at a design studio desk"
+          width={1023}
+          height={1279}
+          priority
+          sizes="(max-width: 768px) 94vw, 26vw"
+          className="reference-hero-image"
+        />
 
         <div className="hero-build-panel">
           <p className="hero-build-eyebrow">—&nbsp; Let&apos;s build something great &nbsp;—</p>

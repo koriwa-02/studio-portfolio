@@ -19,7 +19,7 @@ export default function Footer() {
               alt="Koriwa Studio"
               width={64}
               height={33}
-              className="h-6 w-auto"
+              className="h-8 w-auto md:h-9"
             />
             <p className="mt-5 max-w-xs text-sm text-paper/60">
               A multi-discipline creative agency working across branding, web, content and film.

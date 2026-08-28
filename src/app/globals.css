@@ -77,6 +77,27 @@ button {
   scrollbar-width: none;
 }
 
+/* Isolated editorial styles for project and service pages. Homepage styles remain unchanged. */
+.case-study-page { overflow: hidden; }
+.case-study-breadcrumb { display: flex; flex-wrap: wrap; gap: .55rem; color: color-mix(in srgb, var(--color-ink) 48%, transparent); font-size: .65rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.case-study-breadcrumb a { transition: color .2s var(--ease-out); }
+.case-study-breadcrumb a:hover { color: var(--color-red); }
+.case-study-kicker, .case-study-index { color: var(--color-red); font-size: .7rem; font-weight: 700; letter-spacing: .2em; line-height: 1.4; text-transform: uppercase; }
+.case-study-title { max-width: 11ch; font-family: var(--font-display); font-size: clamp(4rem, 13vw, 12rem); font-weight: 700; letter-spacing: -.06em; line-height: .82; text-transform: uppercase; }
+.case-study-meta { display: grid; gap: 1rem; border-top: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent); padding-top: 1rem; font-size: .7rem; text-transform: uppercase; }
+.case-study-meta div { display: flex; justify-content: space-between; gap: 1rem; }
+.case-study-meta dt { color: color-mix(in srgb, var(--color-ink) 45%, transparent); }
+.case-study-meta dd { max-width: 14rem; text-align: right; }
+.case-study-hero-media { box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--color-ink) 14%, transparent); }
+.case-study-section { animation: case-study-rise .8s var(--ease-out) both; }
+.case-study-heading { max-width: 13ch; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 4.5rem); font-weight: 700; letter-spacing: -.04em; line-height: .92; text-transform: uppercase; }
+.case-study-copy { max-width: 42rem; margin-top: 1.5rem; color: color-mix(in srgb, var(--color-ink) 68%, transparent); font-size: clamp(1rem, 1.5vw, 1.3rem); line-height: 1.55; }
+.case-study-image-frame { position: relative; min-height: clamp(16rem, 46vw, 42rem); overflow: hidden; background: var(--color-paper-dim); }
+.case-study-next-title, .case-study-cta-title { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 8rem); font-weight: 700; letter-spacing: -.06em; line-height: .84; text-transform: uppercase; }
+.case-study-cta-title { max-width: 10ch; }
+@keyframes case-study-rise { from { opacity: 0; transform: translateY(1.5rem); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .case-study-section { animation: none; } }
+
 .nav-left-links,
 .nav-right-links {
   position: absolute;

@@ -64,7 +64,11 @@ export default function ProjectModal({
   }, [open]);
 
   useEffect(() => {
-    if (!open) setPreviewSrc(null);
+    // The preview is transient UI state that must clear when the dialog closes.
+    if (!open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPreviewSrc(null);
+    }
   }, [open]);
 
   useEffect(() => {

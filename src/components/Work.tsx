@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/useGsap";
-import { workItems, workSlug } from "@/lib/content";
+import { workItems } from "@/lib/content";
+import { projectSlug } from "@/lib/projects";
 import { assetPath } from "@/lib/asset";
 
 const filters = ["All", ...Array.from(new Set(workItems.map((item) => item.category.split(" / ")[0])))];
@@ -124,7 +125,7 @@ export default function Work() {
           {filteredItems.map((item) => (
             <Link
               key={`${item.title}-${item.category}`}
-              href={`/work/${workSlug(item.title, item.category)}`}
+              href={`/projects/${projectSlug(item)}/`}
               className="work-card group relative aspect-[4/5] overflow-hidden text-left"
               style={{
                 backgroundColor: item.color,

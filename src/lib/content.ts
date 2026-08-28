@@ -337,6 +337,8 @@ export const workItems = [
   },
 ];
 
+export type WorkItem = (typeof workItems)[number];
+
 export const helpPoints = [
   "Build an online presence that actually gets you noticed.",
   "Get a website designed to convert visitors into paying clients.",

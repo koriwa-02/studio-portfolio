@@ -41,7 +41,7 @@ function ProjectMedia({ project, priority = false }: { project: ProjectCaseStudy
 }
 
 function Gallery({ project }: { project: ProjectCaseStudy }) {
-  const gallery = project.gallery?.length ? project.gallery : project.image ? [project.image] : [];
+  const gallery = project.gallery?.length ? project.gallery : [];
   if (!gallery.length && !project.beforeImage && !project.afterImage) return null;
 
   return (
@@ -127,7 +127,7 @@ export default function CaseStudyPage({ project, nextProject }: CaseStudyPagePro
             </section>
             <section className="case-study-section grid gap-8 border-t border-ink/15 py-16 md:grid-cols-12 md:gap-12 md:py-24" aria-labelledby="result-heading">
               <div className="md:col-span-4"><p className="case-study-index">07 — Result</p></div>
-              <div className="md:col-span-8"><h2 id="result-heading" className="case-study-heading">A platform that does its job.</h2><p className="case-study-copy">{project.results ?? project.overview}</p></div>
+              <div className="md:col-span-8"><h2 id="result-heading" className="case-study-heading">A platform that does its job.</h2><p className="case-study-copy">{project.results ?? "The final work gives the project a focused, ready-to-use visual asset for its primary channels."}</p></div>
             </section>
 
             <section className="case-study-next border-t border-ink/15 py-16 md:py-24" aria-labelledby="next-heading">

@@ -38,7 +38,7 @@ export type ServicePage = (typeof serviceDetails)[keyof typeof serviceDetails] &
 
 export const servicePages: ServicePage[] = serviceContent.map((service) => ({
   ...serviceDetails[service.title as keyof typeof serviceDetails],
-  title: service.title,
+  title: service.title === "Web Design & Dev" ? "Web Design & Development" : service.title,
   index: service.index,
   description: service.description,
   relatedProjects: projects.filter((project) => {
@@ -48,7 +48,7 @@ export const servicePages: ServicePage[] = serviceContent.map((service) => ({
       (title.includes("graphic") && (category.includes("print") || category.includes("packaging"))) ||
       (title.includes("campaign") && category.includes("campaign")) ||
       (title.includes("social") && category.includes("social")) ||
-      (title.includes("brand") && category.includes("brand"));
+      (title.includes("brand") && (category.includes("brand") || project.services.some((service) => /brand|identity|art direction/i.test(service))));
   }),
 }));
 

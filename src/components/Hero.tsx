@@ -73,13 +73,13 @@ export default function Hero() {
       className="reference-hero relative flex min-h-[calc(100dvh-96px)] flex-col overflow-visible bg-paper text-ink"
     >
       <div className="reference-hero-main">
-        <div className="reference-hero-word" aria-label="KORIWA">
+        <h1 className="reference-hero-word" aria-label="KORIWA">
           {[..."KORIWA"].map((letter, index) => (
             <span className="hero-word-letter" key={`${letter}-${index}`} aria-hidden="true">
               {letter}
             </span>
           ))}
-        </div>
+        </h1>
 
         <Image
           src={assetPath("/hero/koriwa-founder-hero-v2.jpg")}

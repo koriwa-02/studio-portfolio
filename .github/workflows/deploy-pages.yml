@@ -19,8 +19,10 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      # Use a shallow fetch directly so a transient checkout-action hang
+      # cannot prevent the Pages build from starting.
+      - name: Fetch source
+        run: git fetch --depth=1 https://github.com/${{ github.repository }}.git ${{ github.sha }} && git checkout --detach FETCH_HEAD
 
       - name: Setup Node
         uses: actions/setup-node@v4

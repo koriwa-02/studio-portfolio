@@ -52,7 +52,7 @@ export default function Hero() {
 
       if (mobile) {
         scrollTransition
-          .to(".reference-hero-mobile-card", { yPercent: -115, scale: 0.9, opacity: 1, ease: "power2.inOut" }, 0)
+          .to(".reference-hero-mobile-card", { yPercent: -115, scale: 0.72, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)

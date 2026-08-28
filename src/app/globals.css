@@ -941,6 +941,7 @@ button {
 
   .hero-build-panel {
     padding: 12vh 18px 8vh;
+    background: var(--reference-bg) !important;
   }
 
   .hero-build-eyebrow {

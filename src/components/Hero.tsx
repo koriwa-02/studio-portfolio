@@ -13,6 +13,7 @@ export default function Hero() {
   useGSAP(
     () => {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const mobile = window.matchMedia("(max-width: 767px)").matches;
 
       if (reduced) return;
 
@@ -48,11 +49,11 @@ export default function Hero() {
         },
       });
 
-      const mobile = window.matchMedia("(max-width: 767px)").matches;
-
       if (mobile) {
         scrollTransition
           .to(".reference-hero-mobile-card", { yPercent: -115, scale: 0.72, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".hero-buttons", { yPercent: -180, opacity: 0, ease: "power2.inOut" }, 0)
+          .to(".reference-hero-quote", { yPercent: -180, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)
@@ -117,10 +118,10 @@ export default function Hero() {
                 onClick={() => setContactOpen(true)}
                 className="btn-press reference-hero-cta bg-red text-paper"
               >
-                Start a Project
+                <span>Start a Project</span><span className="hero-mobile-arrow" aria-hidden="true">→</span>
               </button>
               <a href="#work" className="btn-press reference-hero-link">
-                View Our Work
+                <span>View Our Work</span><span className="hero-mobile-arrow" aria-hidden="true">→</span>
               </a>
             </div>
           </div>
@@ -143,6 +144,7 @@ export default function Hero() {
             sizes="100vw"
             className="reference-hero-image reference-hero-image-mobile"
           />
+          <span className="mobile-koriwa-label" aria-hidden="true"><span className="mobile-koriwa-paren">(</span>KORIWA<span className="mobile-koriwa-paren">)</span></span>
         </div>
 
         <div className="hero-build-panel">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/useGsap";
 import { helpPoints } from "@/lib/content";
 import { assetPath } from "@/lib/asset";
@@ -8,6 +8,11 @@ import { assetPath } from "@/lib/asset";
 export default function IHelpYou() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    setShowVideo(!window.matchMedia("(max-width: 767px)").matches);
+  }, []);
 
   useGSAP(
     () => {
@@ -70,16 +75,18 @@ export default function IHelpYou() {
   return (
     <section ref={sectionRef} className="help-story relative min-h-[620px] overflow-hidden bg-ink text-paper md:min-h-[720px]">
       <div className="help-stage relative min-h-[620px] overflow-hidden md:min-h-[720px]">
-        <video
-          ref={videoRef}
-          className="help-video absolute inset-0 h-full w-full scale-[1.08] object-cover"
-          src={assetPath("/videos/i-help-you-bg.mp4")}
-          poster={assetPath("/videos/i-help-you-bg-poster.webp")}
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
+        {showVideo && (
+          <video
+            ref={videoRef}
+            className="help-video absolute inset-0 h-full w-full scale-[1.08] object-cover"
+            src={assetPath("/videos/i-help-you-bg.mp4")}
+            poster={assetPath("/videos/i-help-you-bg-poster.webp")}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        )}
         <div className="absolute inset-0 bg-ink/70" />
 
         <div className="relative z-10 mx-auto grid min-h-[100svh] w-full max-w-7xl grid-cols-1 content-center gap-12 px-6 py-20 md:grid-cols-12 md:gap-16 md:px-10 md:py-24">

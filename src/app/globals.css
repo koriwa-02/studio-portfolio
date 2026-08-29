@@ -399,6 +399,14 @@ button {
   background: rgb(10 10 10 / 0.2);
 }
 
+.hero-mobile-arrow {
+  display: none;
+}
+
+.mobile-koriwa-label {
+  display: none;
+}
+
 @media (max-width: 767px) {
   .editorial-hero {
     min-height: calc(100dvh - 84px);
@@ -1321,4 +1329,160 @@ button {
   background-image:
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.42) 0 1px, transparent 1px 40px),
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 8px);
+}
+
+@media (max-width: 767px) {
+  .reference-nav-menu-button span {
+    background: var(--color-paper);
+  }
+
+  .reference-hero-mobile-card,
+  .reference-hero-image-mobile {
+    overflow: visible;
+    background: transparent;
+    box-shadow: none;
+    clip-path: none;
+  }
+
+  .reference-hero-meta {
+    display: none;
+  }
+
+  .reference-hero-quote {
+    position: absolute;
+    top: 18%;
+    right: 20px;
+    left: 20px;
+    z-index: 4;
+    display: block;
+    width: auto;
+    color: var(--reference-bg);
+    transform: none;
+  }
+
+  .reference-hero-quote blockquote {
+    max-width: 20rem;
+    color: var(--reference-bg);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: clamp(1.85rem, 8vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.96;
+    text-transform: none;
+  }
+
+  .reference-hero-quote blockquote span {
+    display: inline;
+  }
+
+  .reference-hero-quote blockquote .reference-hero-quote-mark {
+    display: inline;
+  }
+
+  .reference-hero-quote blockquote em {
+    display: inline;
+    color: var(--reference-bg);
+    font-family: Helvetica, Arial, sans-serif;
+    font-style: normal;
+  }
+
+  .reference-hero-copy {
+    right: 20px;
+    bottom: 48px;
+    left: 20px;
+    text-align: center;
+  }
+
+  .reference-hero-copy::before {
+    display: none;
+  }
+
+  .reference-hero-image {
+    top: 23%;
+    bottom: auto;
+    left: 50%;
+    z-index: 2;
+    display: block;
+    width: 84%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center top;
+    transform: translateX(-50%);
+  }
+
+  .reference-hero-image-mobile {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center top;
+    transform: none;
+  }
+
+  .reference-hero-image:not(.reference-hero-image-mobile) {
+    display: none;
+  }
+
+  .reference-hero-copy-label {
+    display: none;
+  }
+
+  .reference-hero-copy .hero-sub {
+    position: relative;
+    top: -0.4rem;
+  }
+
+  .mobile-koriwa-label {
+    position: absolute;
+    right: 0;
+    bottom: 178px;
+    left: 0;
+    z-index: 1;
+    display: block;
+    width: max-content;
+    margin: 0 auto;
+    color: var(--reference-bg);
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 17vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.08em;
+    line-height: 0.82;
+  }
+
+  .mobile-koriwa-paren {
+    display: inline-block;
+    color: var(--reference-red);
+    margin-inline: 0.08em;
+    transform: translateY(-0.12rem);
+  }
+
+  .reference-hero-copy .hero-buttons {
+    width: min(100%, 280px);
+    margin-inline: auto;
+    flex-direction: column;
+    justify-content: center;
+    transform: translateY(-0.65rem);
+  }
+
+  .reference-hero-cta,
+  .reference-hero-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .hero-mobile-arrow {
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1;
+  }
 }

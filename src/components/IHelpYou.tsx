@@ -1,18 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/useGsap";
+import { useRef, useSyncExternalStore } from "react";
+import { gsap, useGSAP } from "@/lib/useGsap";
 import { helpPoints } from "@/lib/content";
 import { assetPath } from "@/lib/asset";
 
 export default function IHelpYou() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [showVideo, setShowVideo] = useState(false);
-
-  useEffect(() => {
-    setShowVideo(!window.matchMedia("(max-width: 767px)").matches);
-  }, []);
+  const showVideo = useSyncExternalStore(
+    (onStoreChange) => {
+      const media = window.matchMedia("(max-width: 767px)");
+      const onChange = () => onStoreChange();
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    },
+    () => !window.matchMedia("(max-width: 767px)").matches,
+    () => false,
+  );
 
   useGSAP(
     () => {

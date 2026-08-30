@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/useGsap";
 import { workItems } from "@/lib/content";
@@ -48,12 +48,89 @@ function WorkVideo({ src, poster }: { src: string; poster?: string }) {
   );
 }
 
+function WorkCard({ item, index }: { item: (typeof workItems)[number]; index: number }) {
+  return (
+    <Link
+      href={`/projects/${projectSlug(item)}/`}
+      className="work-card work-carousel-card group relative aspect-[4/5] overflow-hidden text-left"
+      style={{
+        backgroundColor: item.color,
+        "--card-index": index,
+      } as CSSProperties}
+    >
+      {(item.video || item.image) && (
+        <>
+          {item.video ? (
+            <WorkVideo
+              src={assetPath(item.video)}
+              poster={item.image ? assetPath(item.image) : undefined}
+            />
+          ) : (
+            <img
+              src={assetPath(item.image)}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[600ms] ease-[var(--ease-out)] group-hover:scale-105"
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
+        </>
+      )}
+      <div className="work-card-content absolute inset-0 flex flex-col justify-between p-6 text-paper">
+        <span className="text-xs font-bold uppercase tracking-[0.2em] opacity-70">
+          {item.year}
+        </span>
+        <div className="translate-y-2 opacity-90 transition-transform duration-[250ms] ease-[var(--ease-out)] group-hover:translate-y-0">
+          <h3 className="font-display text-2xl font-bold uppercase leading-tight">
+            {item.title}
+          </h3>
+          <p className="mt-1 text-xs font-bold uppercase tracking-[0.15em] opacity-70">
+            {item.category}
+          </p>
+        </div>
+      </div>
+      <div className="absolute inset-0 bg-ink/0 transition-colors duration-[250ms] ease-[var(--ease-out)] group-hover:bg-ink/10" />
+    </Link>
+  );
+}
+
 export default function Work() {
   const sectionRef = useRef<HTMLElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const pausedRef = useRef(false);
   const [filter, setFilter] = useState("All");
 
   const filteredItems =
     filter === "All" ? workItems : workItems.filter((item) => item.category.startsWith(filter));
+
+  useEffect(() => {
+    const viewport = carouselRef.current;
+    if (!viewport || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    const speed = 0.45;
+    const tick = () => {
+      if (!pausedRef.current) {
+        const loopWidth = viewport.scrollWidth / 2;
+        viewport.scrollLeft += speed;
+        if (loopWidth > 0 && viewport.scrollLeft >= loopWidth) viewport.scrollLeft -= loopWidth;
+      }
+      frame = window.requestAnimationFrame(tick);
+    };
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, [filter]);
+
+  const pauseCarousel = () => {
+    pausedRef.current = true;
+  };
+
+  const resumeCarousel = () => {
+    pausedRef.current = false;
+  };
 
   useGSAP(
     () => {
@@ -121,53 +198,26 @@ export default function Work() {
           ))}
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredItems.map((item) => (
-            <Link
-              key={`${item.title}-${item.category}`}
-              href={`/projects/${projectSlug(item)}/`}
-              className="work-card group relative aspect-[4/5] overflow-hidden text-left"
-              style={{
-                backgroundColor: item.color,
-              }}
-            >
-              {(item.video || item.image) && (
-                <>
-                  {item.video ? (
-                    <WorkVideo
-                      src={assetPath(item.video)}
-                      poster={item.image ? assetPath(item.image) : undefined}
-                    />
-                  ) : (
-                    <img
-                      src={assetPath(item.image)}
-                      alt=""
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[600ms] ease-[var(--ease-out)] group-hover:scale-105"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
-                </>
-              )}
-              <div className="work-card-content absolute inset-0 flex flex-col justify-between p-6 text-paper">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] opacity-70">
-                  {item.year}
-                </span>
-                <div className="translate-y-2 opacity-90 transition-transform duration-[250ms] ease-[var(--ease-out)] group-hover:translate-y-0">
-                  <h3 className="font-display text-2xl font-bold uppercase leading-tight">
-                    {item.title}
-                  </h3>
-                  <p className="mt-1 text-xs font-bold uppercase tracking-[0.15em] opacity-70">
-                    {item.category}
-                  </p>
-                </div>
-              </div>
-              <div className="absolute inset-0 bg-ink/0 transition-colors duration-[250ms] ease-[var(--ease-out)] group-hover:bg-ink/10" />
-            </Link>
-          ))}
+        <div
+          ref={carouselRef}
+          className="work-carousel mt-10"
+          aria-label="Selected projects carousel"
+          onPointerEnter={pauseCarousel}
+          onPointerLeave={resumeCarousel}
+          onFocus={pauseCarousel}
+          onBlur={resumeCarousel}
+          onPointerDown={(event) => {
+            if (event.pointerType === "touch") pauseCarousel();
+          }}
+          onPointerUp={(event) => {
+            if (event.pointerType === "touch") window.setTimeout(resumeCarousel, 1200);
+          }}
+        >
+          <div className="work-carousel-track">
+            {[...filteredItems, ...filteredItems].map((item, index) => (
+              <WorkCard key={`${item.title}-${item.category}-${index}`} item={item} index={index} />
+            ))}
+          </div>
         </div>
       </div>
 

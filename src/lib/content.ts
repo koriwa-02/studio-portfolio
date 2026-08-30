@@ -11,135 +11,35 @@ export const services = [
     title: "Brand Identity",
     description:
       "Naming, logo systems, visual identity and guidelines built to hold up across every touchpoint.",
-    packages: [
-      {
-        name: "Starter",
-        price: "$1,500",
-        blurb: "A focused mark for brands just getting off the ground.",
-        features: ["Logo & wordmark", "Core color palette", "1 round of revisions"],
-      },
-      {
-        name: "Growth",
-        price: "$3,500",
-        blurb: "A full identity system built to scale with the brand.",
-        features: ["Everything in Starter", "Full visual identity", "Brand guidelines", "3 rounds of revisions"],
-        featured: true,
-      },
-      {
-        name: "Premium",
-        price: "$7,500+",
-        blurb: "End-to-end identity partnership, from strategy to rollout.",
-        features: ["Everything in Growth", "Naming & strategy", "Stationery & templates", "Unlimited revisions"],
-      },
-    ],
+    engagementType: "Custom Proposal",
   },
   {
     index: "02",
     title: "Web Design & Dev",
     description:
       "Motion-first websites and product interfaces — designed, built and shipped in-house.",
-    packages: [
-      {
-        name: "Starter",
-        price: "$2,500",
-        blurb: "A single, sharp landing page that gets you live fast.",
-        features: ["1 page design & build", "Mobile responsive", "Basic animation"],
-      },
-      {
-        name: "Growth",
-        price: "$6,000",
-        blurb: "A full multi-page site with custom motion.",
-        features: ["Up to 6 pages", "Custom GSAP animation", "CMS integration", "SEO setup"],
-        featured: true,
-      },
-      {
-        name: "Premium",
-        price: "$12,000+",
-        blurb: "A full product build — web app, dashboard or e-commerce.",
-        features: ["Unlimited pages", "Custom web app / e-commerce", "3D & WebGL elements", "Ongoing support"],
-      },
-    ],
+    engagementType: "Custom Proposal",
   },
   {
     index: "03",
     title: "Campaigns & Ads",
     description:
       "Paid campaigns and ad creative built to convert — from concept to media buying and performance tracking.",
-    packages: [
-      {
-        name: "Starter",
-        price: "$1,200/mo",
-        blurb: "A focused campaign to test the waters.",
-        features: ["1 platform", "Ad creative (up to 5 assets)", "Campaign setup & launch"],
-      },
-      {
-        name: "Growth",
-        price: "$2,800/mo",
-        blurb: "A full-funnel campaign across your key channels.",
-        features: ["Up to 3 platforms", "Ad creative (up to 15 assets)", "A/B testing", "Performance reporting"],
-        featured: true,
-      },
-      {
-        name: "Premium",
-        price: "$5,000+/mo",
-        blurb: "A dedicated team running paid media end-to-end.",
-        features: ["Unlimited platforms", "Full creative production", "Media buying & optimization", "Dedicated strategist"],
-      },
-    ],
+    engagementType: "Custom Proposal",
   },
   {
     index: "04",
     title: "Graphic Design",
     description:
       "Print collateral and packaging design that make products and campaigns impossible to ignore.",
-    packages: [
-      {
-        name: "Starter",
-        price: "$900",
-        blurb: "A single print piece done right.",
-        features: ["1 print design (flyer, poster, etc.)", "Print-ready files", "1 round of revisions"],
-      },
-      {
-        name: "Growth",
-        price: "$2,400",
-        blurb: "A full packaging system for a product line.",
-        features: ["Packaging design (up to 3 SKUs)", "Print collateral suite", "Die-line & production files", "3 rounds of revisions"],
-        featured: true,
-      },
-      {
-        name: "Premium",
-        price: "$5,000+",
-        blurb: "End-to-end print and packaging partnership.",
-        features: ["Unlimited SKUs", "Full print & packaging system", "Production oversight", "Unlimited revisions"],
-      },
-    ],
+    engagementType: "Custom Proposal",
   },
   {
     index: "05",
     title: "Social Media Management",
     description:
       "Content calendars, community management and platform strategy that keep the brand showing up daily.",
-    packages: [
-      {
-        name: "Starter",
-        price: "$900/mo",
-        blurb: "Consistent posting and light community management.",
-        features: ["1 platform", "12 posts / month", "Basic community replies"],
-      },
-      {
-        name: "Growth",
-        price: "$2,200/mo",
-        blurb: "Full management across your core platforms.",
-        features: ["Up to 3 platforms", "Daily posting", "Full community management", "Monthly strategy call"],
-        featured: true,
-      },
-      {
-        name: "Premium",
-        price: "$4,500+/mo",
-        blurb: "A dedicated social team running the channel end-to-end.",
-        features: ["Unlimited platforms", "Daily posting & stories", "Paid social support", "Dedicated manager"],
-      },
-    ],
+    engagementType: "Custom Proposal",
   },
 ];
 

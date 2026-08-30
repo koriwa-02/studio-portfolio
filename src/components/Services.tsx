@@ -4,7 +4,6 @@ import { useRef } from "react";
 import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/useGsap";
 import { services } from "@/lib/content";
-import { servicePages, serviceRoute } from "@/lib/services";
 
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -100,6 +99,9 @@ export default function Services() {
           <p className="mt-7 max-w-sm text-sm leading-relaxed text-ink/55">
             Brand, web, content and campaigns built to make your next move impossible to ignore.
           </p>
+          <p className="mt-4 max-w-sm text-xs uppercase leading-relaxed tracking-[0.12em] text-ink/45">
+            Each engagement is scoped around your goals, deliverables and timeline.
+          </p>
         </div>
 
         <div className="services-story relative mt-16 min-h-[300vh] md:mt-24">
@@ -141,20 +143,15 @@ export default function Services() {
                         </p>
                       </div>
 
-                      <div>
-                        <div className="grid grid-cols-3 gap-3 border-t border-paper/20 pt-5 md:gap-6 md:pt-6">
-                          {service.packages.map((pkg) => (
-                            <div key={pkg.name}>
-                              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-paper/50">{pkg.name}</p>
-                              <p className="mt-1 font-display text-lg font-bold md:text-2xl">{pkg.price}</p>
-                            </div>
-                          ))}
-                        </div>
+                      <div className="border-t border-paper/20 pt-5 md:pt-6">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-paper/65">
+                          {service.engagementType}
+                        </p>
                         <Link
-                          href={serviceRoute(servicePages[index].slug)}
+                          href="#contact"
                           className="btn-press mt-6 inline-flex items-center border border-paper/45 px-4 py-3 text-[10px] font-bold uppercase tracking-[0.16em] text-paper transition-[background-color,color,transform,border-color] duration-200 ease-[var(--ease-out)] hover:border-paper hover:bg-paper hover:text-ink"
                         >
-                          View selected work <span className="ml-3 text-sm leading-none">→</span>
+                          Start a project <span className="ml-3 text-sm leading-none">→</span>
                         </Link>
                       </div>
                     </div>

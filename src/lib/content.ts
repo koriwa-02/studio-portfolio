@@ -56,7 +56,7 @@ export const workItems = [
     category: "Print / Graphic Design",
     year: "2025",
     color: "#ff2e17",
-    image: "/work/catalog-design.jpg",
+    image: "/work/zidalum-catalog-cover.png",
     beforeImage: "/work/zidalum-before.jpg",
     details:
       "A full product catalog designed for Zidalum — layout system, typography and photography direction built to make every page easy to scan and hard to put down.",
@@ -74,7 +74,7 @@ export const workItems = [
     year: "2025",
     color: "#0a0a0a",
     image: "/work/spectra.jpg",
-    demoVideo: "/work/spectra-scroll.mp4",
+    demoVideo: "/work/spectra-new.mp4",
     details:
       "A motion-first marketing site for Spectra — designed and built in-house, with a custom component system and animation throughout to match the brand's energy.",
     challenge:
@@ -139,7 +139,7 @@ export const workItems = [
     category: "Print / Graphic Design",
     year: "2025",
     color: "#0a0a0a",
-    image: "/work/spectra-catalog.jpg",
+    image: "/work/spectra-catalog-cover.png",
     beforeImage: "/work/spectra-catalog-before.jpg",
     details:
       "A product catalog for Spectra — extending their digital identity into a print system that carries the same energy onto the page.",
@@ -158,9 +158,10 @@ export const workItems = [
     color: "#ff2e17",
     image: "/work/asna-joyeria-ads-1.jpg",
     gallery: [
-      "/work/asna-joyeria-ads-1.jpg",
-      "/work/asna-joyeria-ads-2.jpg",
-      "/work/asna-joyeria-ads-3.jpg",
+      "/work/asna-joyeria-dtc-story-6.png",
+      "/work/asna-joyeria-dtc-story-2.png",
+      "/work/asna-joyeria-dtc-story-3.png",
+      "/work/asna-joyeria-dtc-story-7.png",
     ],
     details:
       "A paid campaign system for Asna Joyería — ad creative, testing and reporting built on top of their content to turn spend into predictable sales.",

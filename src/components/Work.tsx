@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/useGsap";
 import { workItems } from "@/lib/content";
@@ -48,14 +48,40 @@ function WorkVideo({ src, poster }: { src: string; poster?: string }) {
   );
 }
 
-function WorkCard({ item, index }: { item: (typeof workItems)[number]; index: number }) {
+function WorkCard({
+  item,
+  index,
+  activeIndex,
+  angleStep,
+  radius,
+  onActivate,
+}: {
+  item: (typeof workItems)[number];
+  index: number;
+  activeIndex: number;
+  angleStep: number;
+  radius: number;
+  onActivate: (index: number) => void;
+}) {
+  const relativeIndex = index - activeIndex;
+  const active = relativeIndex === 0;
   return (
     <Link
       href={`/projects/${projectSlug(item)}/`}
-      className="work-card work-carousel-card group relative aspect-[4/5] overflow-hidden text-left"
+      aria-current={active ? "true" : undefined}
+      onClick={(event) => {
+        if (!active) {
+          event.preventDefault();
+          onActivate(index);
+        }
+      }}
+      className={`work-card work-carousel-card group absolute left-1/2 top-1/2 aspect-[4/5] overflow-hidden text-left ${active ? "is-active" : ""}`}
       style={{
         backgroundColor: item.color,
-        "--card-index": index,
+        "--card-angle": `${index * angleStep}deg`,
+        "--card-radius": `${radius}px`,
+        "--card-scale": active ? 1.05 : 1,
+        zIndex: 100 - Math.abs(relativeIndex),
       } as CSSProperties}
     >
       {(item.video || item.image) && (
@@ -68,7 +94,7 @@ function WorkCard({ item, index }: { item: (typeof workItems)[number]; index: nu
           ) : (
             <img
               src={assetPath(item.image)}
-              alt=""
+              alt={`${item.title} ${item.category.toLowerCase()} project by KORIWA Studio`}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-[600ms] ease-[var(--ease-out)] group-hover:scale-105"
               loading="lazy"
               onError={(e) => {
@@ -100,29 +126,44 @@ function WorkCard({ item, index }: { item: (typeof workItems)[number]; index: nu
 export default function Work() {
   const sectionRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const cylinderRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
+  const draggingRef = useRef(false);
+  const didDragRef = useRef(false);
+  const rotationRef = useRef(0);
+  const dragStartRef = useRef({ x: 0, rotation: 0 });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [rotation, setRotation] = useState(0);
+  const [radius, setRadius] = useState(900);
   const [filter, setFilter] = useState("All");
 
   const filteredItems =
     filter === "All" ? workItems : workItems.filter((item) => item.category.startsWith(filter));
 
+  const angleStep = 15;
+
   useEffect(() => {
     const viewport = carouselRef.current;
-    if (!viewport || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!viewport) return;
+    const updateRadius = () => setRadius(Math.max(560, Math.min(1100, viewport.clientWidth * 0.78)));
+    updateRadius();
+    const observer = new ResizeObserver(updateRadius);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
 
-    let frame = 0;
-    const speed = 0.45;
-    const tick = () => {
-      if (!pausedRef.current) {
-        const loopWidth = viewport.scrollWidth / 2;
-        viewport.scrollLeft += speed;
-        if (loopWidth > 0 && viewport.scrollLeft >= loopWidth) viewport.scrollLeft -= loopWidth;
-      }
-      frame = window.requestAnimationFrame(tick);
-    };
-    frame = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(frame);
-  }, [filter]);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => {
+      if (pausedRef.current || draggingRef.current) return;
+      const next = activeIndex + 1 >= filteredItems.length ? 0 : activeIndex + 1;
+      const nextRotation = next === 0 ? 0 : -next * angleStep;
+      rotationRef.current = nextRotation;
+      setActiveIndex(next);
+      setRotation(nextRotation);
+    }, 4500);
+    return () => window.clearInterval(timer);
+  }, [activeIndex, angleStep, filteredItems.length]);
 
   const pauseCarousel = () => {
     pausedRef.current = true;
@@ -132,23 +173,49 @@ export default function Work() {
     pausedRef.current = false;
   };
 
+  const activate = (index: number) => {
+    const nextRotation = index === 0 ? 0 : -index * angleStep;
+    rotationRef.current = nextRotation;
+    setActiveIndex(index);
+    setRotation(nextRotation);
+  };
+
+  const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    draggingRef.current = true;
+    didDragRef.current = false;
+    pausedRef.current = true;
+    dragStartRef.current = { x: event.clientX, rotation: rotationRef.current };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    const delta = event.clientX - dragStartRef.current.x;
+    if (Math.abs(delta) > 6) didDragRef.current = true;
+    const nextRotation = dragStartRef.current.rotation + delta * 0.12;
+    rotationRef.current = nextRotation;
+    setRotation(nextRotation);
+  };
+
+  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    event.currentTarget.releasePointerCapture(event.pointerId);
+    const target = Math.max(0, Math.min(filteredItems.length - 1, Math.round(-rotationRef.current / angleStep)));
+    activate(target);
+    window.setTimeout(resumeCarousel, 1200);
+  };
+
   useGSAP(
     () => {
-      gsap.set(".work-card", { clipPath: "inset(0% 100% 100% 0%)" });
       gsap.set(".work-card-content", { opacity: 0, y: 16 });
 
       const tl = gsap.timeline({
         scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
       });
-      tl.to(".work-card", {
-        clipPath: "inset(0% 0% 0% 0%)",
-        duration: 0.9,
-        ease: "power4.out",
-        stagger: 0.12,
-      }).to(
+      tl.to(
         ".work-card-content",
         { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.12 },
-        "-=0.5",
       );
     },
     { scope: sectionRef },
@@ -186,7 +253,12 @@ export default function Work() {
             <button
               key={f}
               type="button"
-              onClick={() => setFilter(f)}
+              onClick={() => {
+                setFilter(f);
+                setActiveIndex(0);
+                rotationRef.current = 0;
+                setRotation(0);
+              }}
               className={`btn-press rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] transition-colors duration-200 ease-[var(--ease-out)] ${
                 filter === f
                   ? "border-ink bg-ink text-paper"
@@ -202,22 +274,49 @@ export default function Work() {
           ref={carouselRef}
           className="work-carousel mt-10"
           aria-label="Selected projects carousel"
+          tabIndex={0}
           onPointerEnter={pauseCarousel}
           onPointerLeave={resumeCarousel}
           onFocus={pauseCarousel}
           onBlur={resumeCarousel}
-          onPointerDown={(event) => {
-            if (event.pointerType === "touch") pauseCarousel();
-          }}
-          onPointerUp={(event) => {
-            if (event.pointerType === "touch") window.setTimeout(resumeCarousel, 1200);
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowRight") {
+              event.preventDefault();
+              activate((activeIndex + 1) % filteredItems.length);
+            }
+            if (event.key === "ArrowLeft") {
+              event.preventDefault();
+              activate((activeIndex - 1 + filteredItems.length) % filteredItems.length);
+            }
           }}
         >
-          <div className="work-carousel-track">
-            {[...filteredItems, ...filteredItems].map((item, index) => (
-              <WorkCard key={`${item.title}-${item.category}-${index}`} item={item} index={index} />
+          <div
+            ref={cylinderRef}
+            className="work-carousel-track"
+            style={{ "--work-rotation": `${rotation}deg` } as CSSProperties}
+          >
+            {filteredItems.map((item, index) => (
+              <WorkCard
+                key={`${item.title}-${item.category}`}
+                item={item}
+                index={index}
+                activeIndex={activeIndex}
+                angleStep={angleStep}
+                radius={radius}
+                onActivate={activate}
+              />
             ))}
           </div>
+        </div>
+        <div className="mt-6 flex items-center justify-between gap-4">
+          <button type="button" className="work-carousel-control" onClick={() => activate((activeIndex - 1 + filteredItems.length) % filteredItems.length)} aria-label="Previous project">←</button>
+          <p className="text-center text-xs font-bold uppercase tracking-[0.18em]" aria-live="polite">
+            {filteredItems[activeIndex]?.title} <span className="text-red">·</span> {filteredItems[activeIndex]?.category} <span className="text-red">·</span> {filteredItems[activeIndex]?.year}
+          </p>
+          <button type="button" className="work-carousel-control" onClick={() => activate((activeIndex + 1) % filteredItems.length)} aria-label="Next project">→</button>
         </div>
       </div>
 

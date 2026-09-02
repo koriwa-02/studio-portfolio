@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { assetPath } from "@/lib/asset";
 import { projectImageAlt, projectRoute, type ProjectCaseStudy } from "@/lib/projects";
 import CatalogPreview from "@/components/CatalogPreview";
+import ImageLightbox from "@/components/ImageLightbox";
 
 type CaseStudyPageProps = {
   project: ProjectCaseStudy;
@@ -48,15 +49,25 @@ function Gallery({ project }: { project: ProjectCaseStudy }) {
   return (
     <div className="mt-14 grid gap-5 md:grid-cols-2">
       {gallery.map((image, index) => (
-        <figure key={image} className={`${index === 0 ? "md:col-span-2" : ""} case-study-image-frame`}>
-          <Image
-            src={assetPath(image)}
-            alt={`${projectImageAlt(project)} — image ${index + 1}`}
-            fill
-            sizes={index === 0 ? "(max-width: 768px) 100vw, 90vw" : "(max-width: 768px) 100vw, 45vw"}
-            className="object-cover"
-            loading={index === 0 ? "eager" : "lazy"}
-          />
+        <figure
+          key={image}
+          className={`${index === 0 ? "md:col-span-2" : ""} case-study-image-frame ${image.includes("dtc-story") ? "case-study-image-frame-natural" : ""}`}
+        >
+          {image.includes("dtc-story") ? (
+            <ImageLightbox
+              src={assetPath(image)}
+              alt={`${projectImageAlt(project)} — image ${index + 1}`}
+            />
+          ) : (
+            <Image
+              src={assetPath(image)}
+              alt={`${projectImageAlt(project)} — image ${index + 1}`}
+              fill
+              sizes={index === 0 ? "(max-width: 768px) 100vw, 90vw" : "(max-width: 768px) 100vw, 45vw"}
+              className="object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+          )}
         </figure>
       ))}
       {project.beforeImage && project.afterImage && (

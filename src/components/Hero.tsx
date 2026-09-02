@@ -67,7 +67,12 @@ export default function Hero() {
         scrollTransition
           .to(".reference-hero-image", { yPercent: -125, scale: 0.86, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".reference-hero-copy", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
-          .to(".reference-hero-quote", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
+          .fromTo(
+            ".reference-hero-quote",
+            { yPercent: 0, opacity: 1, immediateRender: false },
+            { yPercent: -125, opacity: 0, ease: "power2.inOut" },
+            0,
+          )
           .to(".reference-hero-meta", { yPercent: -125, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".reference-hero-word", { yPercent: -115, opacity: 0, ease: "power2.inOut" }, 0)
           .to(".hero-build-panel", { opacity: 1, yPercent: 0, ease: "power2.inOut" }, 0.2)
@@ -118,7 +123,7 @@ export default function Hero() {
                 onClick={() => setContactOpen(true)}
                 className="btn-press reference-hero-cta bg-red text-paper"
               >
-                <span>Start a Project</span><span className="hero-mobile-arrow" aria-hidden="true">→</span>
+                <span>Get a Free Audit</span><span className="hero-mobile-arrow" aria-hidden="true">→</span>
               </button>
               <a href="#work" className="btn-press reference-hero-link">
                 <span>View Our Work</span><span className="hero-mobile-arrow" aria-hidden="true">→</span>

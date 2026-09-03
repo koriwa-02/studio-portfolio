@@ -56,9 +56,9 @@ export default function Work() {
     let frame = 0;
     const tick = () => {
       if (!pausedRef.current) {
-        const loopWidth = viewport.scrollWidth / 2;
+        const endPosition = viewport.scrollWidth - viewport.clientWidth;
         viewport.scrollLeft += 0.45;
-        if (loopWidth > 0 && viewport.scrollLeft >= loopWidth) viewport.scrollLeft -= loopWidth;
+        if (endPosition > 0 && viewport.scrollLeft >= endPosition) viewport.scrollLeft = 0;
       }
       frame = window.requestAnimationFrame(tick);
     };
@@ -88,7 +88,7 @@ export default function Work() {
           {filters.map((itemFilter) => <button key={itemFilter} type="button" onClick={() => setFilter(itemFilter)} className={`btn-press rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] transition-colors duration-200 ease-[var(--ease-out)] ${filter === itemFilter ? "border-ink bg-ink text-paper" : "border-ink/15 text-ink/60 hover:border-ink hover:text-ink"}`}>{itemFilter}</button>)}
         </div>
         <div ref={carouselRef} className="work-carousel mt-10" aria-label="Selected projects carousel" onPointerEnter={() => { pausedRef.current = true; }} onPointerLeave={() => { pausedRef.current = false; }} onFocus={() => { pausedRef.current = true; }} onBlur={() => { pausedRef.current = false; }} onPointerDown={(event) => { if (event.pointerType === "touch") pausedRef.current = true; }} onPointerUp={(event) => { if (event.pointerType === "touch") window.setTimeout(() => { pausedRef.current = false; }, 1200); }}>
-          <div className="work-carousel-track">{[...filteredItems, ...filteredItems].map((item, index) => <WorkCard key={`${item.title}-${item.category}-${index}`} item={item} />)}</div>
+          <div className="work-carousel-track">{filteredItems.map((item) => <WorkCard key={`${item.title}-${item.category}`} item={item} />)}</div>
         </div>
       </div>
     </section>

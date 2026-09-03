@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import ProblemSolutionStory from "@/components/ProblemSolutionStory";
 import Marquee from "@/components/Marquee";
 import Services from "@/components/Services";
 import HowItWorks from "@/components/HowItWorks";
@@ -22,10 +23,11 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <Nav />
+        <Nav />
       <main>
         <Hero />
         <Marquee />
+        <ProblemSolutionStory />
         <Services />
         <IHelpYou />
         <Work />

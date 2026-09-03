@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/useGsap";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 const panels = [
   {
@@ -39,91 +39,180 @@ export default function ProblemSolutionStory() {
   const sectionRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion() ?? false;
+  const [layout, setLayout] = useState({ desktop: false, distance: 0, range: 0 });
 
-  useGSAP(() => {
-    const section = sectionRef.current;
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
+  const trackTransform = useTransform(
+    smoothProgress,
+    [0, 1],
+    ["translate3d(0px, 0px, 0px)", `translate3d(-${layout.distance}px, 0px, 0px)`],
+  );
+  const progressTransform = useTransform(smoothProgress, [0, 1], ["scaleX(0)", "scaleX(1)"]);
+
+  useEffect(() => {
     const viewport = viewportRef.current;
     const track = trackRef.current;
-    const progress = progressRef.current;
-    if (!section || !viewport || !track || !progress) return;
+    if (!viewport || !track) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const mobile = window.matchMedia("(max-width: 767px)").matches;
-    if (reduced || mobile) return;
+    const updateLayout = () => {
+      const desktop = window.matchMedia("(min-width: 768px)").matches && !reduceMotion;
+      if (!desktop) {
+        setLayout({ desktop: false, distance: 0, range: 0 });
+        return;
+      }
 
-    const horizontalDistance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
-    const verticalDistance = () => Math.max(window.innerHeight * 1.5, horizontalDistance() * 0.72);
-    const animation = gsap.to(track, {
-      x: () => -horizontalDistance(),
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${verticalDistance()}`,
-        scrub: true,
-        pin: section,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => gsap.set(progress, { scaleX: self.progress }),
-      },
-    });
+      const distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
+      const range = Math.max(window.innerHeight * 1.5, distance * 0.72);
+      setLayout({ desktop: true, distance, range });
+    };
 
-    return () => animation.kill();
-  }, { scope: sectionRef });
+    updateLayout();
+    const resizeObserver = new ResizeObserver(updateLayout);
+    resizeObserver.observe(viewport);
+    resizeObserver.observe(track);
+    window.addEventListener("resize", updateLayout);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateLayout);
+    };
+  }, [reduceMotion]);
+
+  const sectionStyle = layout.desktop ? { height: `calc(100svh + ${layout.range}px)` } : undefined;
 
   return (
-    <section ref={sectionRef} className="problem-story bg-paper text-ink">
+    <section ref={sectionRef} className="problem-story bg-paper text-ink" style={sectionStyle}>
       <div className="problem-story-shell">
         <div ref={viewportRef} className="problem-story-viewport" aria-label="Common brand problems and KORIWA solutions">
-          <div ref={trackRef} className="problem-story-track">
-            <div className="problem-story-intro px-6 md:px-10">
+          <motion.div
+            ref={trackRef}
+            className="problem-story-track"
+            style={layout.desktop ? { transform: trackTransform } : undefined}
+          >
+            <motion.div
+              className="problem-story-intro px-6 md:px-10"
+              initial={reduceMotion ? false : { opacity: 0, transform: "translate3d(0px, 22px, 0px)" }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, transform: "translate3d(0px, 0px, 0px)" }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+            >
               <p className="text-xs font-bold uppercase tracking-[0.3em] text-red">Why brands get stuck</p>
               <h2 className="problem-story-title mt-5 max-w-4xl font-display text-[clamp(3rem,8vw,8rem)] font-bold uppercase leading-[0.82] tracking-tight">
                 Your business isn’t<br /> the problem.<br /><span className="text-red">The way it shows up</span><br /> might be.
               </h2>
-            </div>
+            </motion.div>
             {panels.map((panel, index) => {
-              const isLast = index === panels.length - 1;
-              const panelContent = (
-                <article key={panel.number} className={`problem-story-panel ${isLast ? "problem-story-panel-dark" : ""}`}>
-                <div className="flex items-start justify-between gap-6">
-                  <span className="problem-story-number font-display text-6xl font-bold leading-none text-red md:text-8xl">{panel.number}</span>
-                  <span className="pt-2 text-xs font-bold uppercase tracking-[0.22em] text-ink/45">Problem / Solution</span>
-                </div>
-                <div className="problem-story-main">
-                  <h3 className="font-display text-[clamp(2.4rem,5vw,5.5rem)] font-bold uppercase leading-[0.86] tracking-tight">{panel.problem}</h3>
-                  <p className="problem-story-copy">{panel.copy}</p>
-                </div>
-                <div className="problem-story-solution">
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-red">→ {panel.solution}</p>
-                  <p className="mt-4 max-w-xl text-base leading-relaxed text-ink/65 md:text-lg">{panel.solutionCopy}</p>
-                  {isLast && (
-                    <>
-                      <p className="problem-story-promise mt-8 max-w-2xl font-display text-3xl font-bold uppercase leading-[0.9] md:text-5xl">You do the work.<br /><span className="text-red">We make sure people find you.</span></p>
-                    </>
-                  )}
-                </div>
-                </article>
-              );
-
-              if (!isLast) return panelContent;
-
-              return (
-                <div key={panel.number} className="problem-story-panel-group">
-                  {panelContent}
-                  <Link href="#contact" className="problem-story-story-cta btn-press mt-4 inline-flex bg-red px-7 py-4 text-xs font-bold uppercase tracking-[0.15em] text-paper">Get a Free Audit <span className="ml-5">→</span></Link>
-                </div>
-              );
+              return <ProblemPanel key={panel.number} panel={panel} index={index} progress={smoothProgress} scrollLinked={layout.desktop} reduceMotion={reduceMotion} />;
             })}
-          </div>
+            <div className="problem-story-panel-group">
+              <ClosingPanel index={panels.length} progress={smoothProgress} scrollLinked={layout.desktop} reduceMotion={reduceMotion} />
+              <Link href="#contact" className="problem-story-story-cta btn-press mt-4 inline-flex bg-red px-7 py-4 text-xs font-bold uppercase tracking-[0.15em] text-paper">Get a Free Audit <span className="ml-5">→</span></Link>
+            </div>
+          </motion.div>
         </div>
 
         <div className="problem-story-progress px-6 md:px-10" aria-hidden="true">
-          <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.2em]"><span>01</span><span>04</span></div>
-          <div className="mt-2 h-px w-full bg-ink/15"><div ref={progressRef} className="h-full origin-left scale-x-0 bg-red" /></div>
+          <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.2em]"><span>01</span><span>05</span></div>
+          <div className="mt-2 h-px w-full bg-ink/15"><motion.div className="h-full origin-left bg-red" style={{ transform: reduceMotion || !layout.desktop ? "scaleX(1)" : progressTransform }} /></div>
         </div>
       </div>
     </section>
+  );
+}
+
+type Panel = (typeof panels)[number];
+
+function ProblemPanel({
+  panel,
+  index,
+  progress,
+  scrollLinked,
+  reduceMotion,
+}: {
+  panel: Panel;
+  index: number;
+  progress: MotionValue<number>;
+  scrollLinked: boolean;
+  reduceMotion: boolean;
+}) {
+  const revealAt = 0.2 + index * 0.16;
+  const panelTransform = useTransform(
+    progress,
+    [Math.max(0, revealAt - 0.12), revealAt, Math.min(1, revealAt + 0.16)],
+    ["translate3d(0px, 24px, 0px)", "translate3d(0px, 0px, 0px)", "translate3d(0px, -5px, 0px)"],
+  );
+  const panelOpacity = useTransform(progress, [Math.max(0, revealAt - 0.12), revealAt], [0.72, 1]);
+  const panelStyle = scrollLinked && !reduceMotion ? { transform: panelTransform, opacity: panelOpacity } : undefined;
+
+  return (
+    <motion.article
+      className="problem-story-panel"
+      style={panelStyle}
+    >
+      <motion.div
+        className="problem-story-panel-body"
+        initial={reduceMotion ? false : { opacity: 0, transform: "translate3d(0px, 14px, 0px)" }}
+        whileInView={reduceMotion ? undefined : { opacity: 1, transform: "translate3d(0px, 0px, 0px)" }}
+        viewport={{ once: true, amount: 0.45 }}
+        transition={{ duration: 0.48, delay: 0.06, ease: [0.23, 1, 0.32, 1] }}
+      >
+        <div className="flex items-start justify-between gap-6">
+          <span className="problem-story-number font-display text-6xl font-bold leading-none text-red md:text-8xl">{panel.number}</span>
+          <span className="pt-2 text-xs font-bold uppercase tracking-[0.22em] text-ink/45">Problem / Solution</span>
+        </div>
+        <div className="problem-story-main">
+          <h3 className="font-display text-[clamp(2.4rem,5vw,5.5rem)] font-bold uppercase leading-[0.86] tracking-tight">{panel.problem}</h3>
+          <p className="problem-story-copy">{panel.copy}</p>
+        </div>
+        <div className="problem-story-solution">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-red">→ {panel.solution}</p>
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-ink/65 md:text-lg">{panel.solutionCopy}</p>
+        </div>
+      </motion.div>
+    </motion.article>
+  );
+}
+
+function ClosingPanel({
+  index,
+  progress,
+  scrollLinked,
+  reduceMotion,
+}: {
+  index: number;
+  progress: MotionValue<number>;
+  scrollLinked: boolean;
+  reduceMotion: boolean;
+}) {
+  const revealAt = 0.2 + index * 0.16;
+  const panelTransform = useTransform(
+    progress,
+    [Math.max(0, revealAt - 0.12), revealAt, Math.min(1, revealAt + 0.16)],
+    ["translate3d(0px, 24px, 0px)", "translate3d(0px, 0px, 0px)", "translate3d(0px, -5px, 0px)"],
+  );
+  const panelOpacity = useTransform(progress, [Math.max(0, revealAt - 0.12), revealAt], [0.72, 1]);
+  const panelStyle = scrollLinked && !reduceMotion ? { transform: panelTransform, opacity: panelOpacity } : undefined;
+
+  return (
+    <motion.article className="problem-story-panel problem-story-closing-panel" style={panelStyle}>
+      <motion.div
+        className="problem-story-panel-body"
+        initial={reduceMotion ? false : { opacity: 0, transform: "translate3d(0px, 14px, 0px)" }}
+        whileInView={reduceMotion ? undefined : { opacity: 1, transform: "translate3d(0px, 0px, 0px)" }}
+        viewport={{ once: true, amount: 0.45 }}
+        transition={{ duration: 0.48, delay: 0.06, ease: [0.23, 1, 0.32, 1] }}
+      >
+        <div className="flex items-start justify-between gap-6">
+          <span className="problem-story-number font-display text-6xl font-bold leading-none text-red md:text-8xl">05</span>
+          <span className="pt-2 text-xs font-bold uppercase tracking-[0.22em] text-ink/45">The outcome</span>
+        </div>
+        <p className="problem-story-closing-copy max-w-2xl font-display font-bold uppercase">You do the work.<br /><span className="text-red">We make sure people find you.</span></p>
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-red">A digital partner that keeps you visible →</p>
+      </motion.div>
+    </motion.article>
   );
 }

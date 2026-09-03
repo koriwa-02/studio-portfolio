@@ -503,10 +503,11 @@ button {
 
 .problem-story {
   position: relative;
-  overflow: hidden;
 }
 
 .problem-story-shell {
+  position: sticky;
+  top: 0;
   height: 100svh;
   min-height: 600px;
   display: flex;
@@ -554,17 +555,15 @@ button {
   border-top: 1px solid rgb(17 17 17 / 0.2);
   border-bottom: 1px solid rgb(17 17 17 / 0.2);
   padding: clamp(1rem, 2.2vw, 2.25rem);
+  will-change: transform, opacity;
 }
 
-.problem-story-panel-dark {
-  border-color: rgb(247 246 244 / 0.25);
-  background: var(--color-ink);
-  color: var(--color-paper);
-}
-
-.problem-story-panel-dark .text-ink\/45,
-.problem-story-panel-dark .text-ink\/65 {
-  color: rgb(247 246 244 / 0.62);
+.problem-story-panel-body {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  will-change: transform, opacity;
 }
 
 .problem-story-main {
@@ -580,17 +579,9 @@ button {
   line-height: 1.5;
 }
 
-.problem-story-panel-dark .problem-story-copy {
-  color: rgb(247 246 244 / 0.68);
-}
-
 .problem-story-solution {
   border-top: 1px solid rgb(17 17 17 / 0.15);
   padding-top: 1rem;
-}
-
-.problem-story-panel-dark .problem-story-solution {
-  border-color: rgb(247 246 244 / 0.2);
 }
 
 .problem-story-panel-group {
@@ -612,8 +603,10 @@ button {
   margin: 0 !important;
 }
 
-.problem-story-promise {
-  color: var(--color-paper);
+.problem-story-closing-copy {
+  font-size: clamp(2.7rem, 5.5vw, 6rem);
+  letter-spacing: -0.04em;
+  line-height: 0.84;
 }
 
 @media (min-width: 768px) {
@@ -637,19 +630,6 @@ button {
     line-height: 1.35;
   }
 
-  .problem-story-panel-dark .problem-story-promise {
-    margin-top: 1rem !important;
-    font-size: clamp(1.65rem, 2.7vw, 3rem);
-  }
-
-  .problem-story-panel-dark a {
-    display: flex;
-    width: max-content;
-    margin-left: auto !important;
-    margin-top: 1.25rem !important;
-    padding-top: .85rem;
-    padding-bottom: .85rem;
-  }
 }
 
 .problem-story-progress {
@@ -753,6 +733,7 @@ button {
 
 @media (max-width: 767px) {
   .problem-story-shell {
+    position: static;
     min-height: 0;
     height: auto;
     padding: 6rem 0 3rem;
@@ -846,6 +827,10 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .problem-story-shell {
+    position: static;
+  }
+
   .problem-story-viewport {
     overflow-x: auto;
     overflow-y: hidden;
@@ -1104,6 +1089,10 @@ button {
   transform: translateY(-50%);
 }
 
+.reference-hero-quote-content {
+  display: block;
+}
+
 .reference-hero-quote blockquote {
   margin: 0;
   color: var(--reference-ink);
@@ -1335,10 +1324,6 @@ button {
   .reference-hero-copy .hero-buttons {
     align-items: stretch;
     gap: 10px;
-  }
-
-  .reference-hero-quote {
-    display: none;
   }
 
   .reference-hero-quote blockquote {

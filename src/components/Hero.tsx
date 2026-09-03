@@ -31,7 +31,7 @@ export default function Hero() {
           { opacity: 0, y: "100%", duration: 0.9, stagger: 0.08 },
           "-=0.3",
         )
-        .from(".reference-hero-quote", { opacity: 0, y: 16, duration: 0.6 }, "-=0.35")
+        .from(".reference-hero-quote-content", { opacity: 0, y: 16, duration: 0.6 }, "-=0.35")
       .from(".hero-sub", { opacity: 0, y: 16, duration: 0.6 }, "-=0.4")
         .from(".hero-buttons", { opacity: 0, y: 16, duration: 0.6 }, "-=0.4")
       .from(".hero-scroll", { opacity: 0, duration: 0.6 }, "-=0.3");
@@ -105,7 +105,7 @@ export default function Hero() {
 
         <div className="reference-hero-mobile-card">
           <div className="reference-hero-quote">
-            <blockquote>
+            <blockquote className="reference-hero-quote-content">
               <span className="reference-hero-quote-mark">“</span>
               We don’t decorate brands. We give them presence.
               <span className="reference-hero-quote-mark">”</span>

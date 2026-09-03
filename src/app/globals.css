@@ -736,15 +736,16 @@ button {
     position: static;
     min-height: 0;
     height: auto;
-    padding: 6rem 0 3rem;
+    padding: 4.5rem 0 2.5rem;
   }
 
   .problem-story-title {
-    font-size: clamp(2.7rem, 12vw, 4.5rem);
-    max-width: 13ch;
+    font-size: clamp(2.2rem, 10vw, 3.5rem);
+    max-width: 12ch;
   }
 
   .problem-story-viewport {
+    width: 100%;
     height: auto;
     display: block;
     overflow-x: auto;
@@ -752,9 +753,11 @@ button {
     margin-top: 0;
     padding-bottom: 0.5rem;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: 6vw;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
   }
 
   .problem-story-viewport::-webkit-scrollbar {
@@ -763,20 +766,30 @@ button {
 
   .problem-story-track {
     height: auto;
-    gap: 1rem;
+    gap: 0.85rem;
     padding: 0 6vw 1rem 6vw;
   }
 
   .problem-story-panel {
-    flex-basis: 88vw;
+    flex-basis: 82vw;
     height: auto;
-    min-height: 560px;
+    min-height: 450px;
     scroll-snap-align: start;
-    padding: 1.25rem;
+    scroll-snap-stop: always;
+    padding: 1rem;
+  }
+
+  .problem-story-panel h3 {
+    font-size: clamp(1.9rem, 8vw, 2.8rem);
+    line-height: 0.9;
+  }
+
+  .problem-story-number {
+    font-size: clamp(2.8rem, 12vw, 3.75rem) !important;
   }
 
   .problem-story-panel-group {
-    flex-basis: 88vw;
+    flex-basis: 82vw;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -794,20 +807,25 @@ button {
   }
 
   .problem-story-intro {
-    flex-basis: 88vw;
+    flex-basis: 82vw;
     height: auto;
-    min-height: 560px;
+    min-height: 450px;
     justify-content: flex-start;
-    padding-top: 1.25rem;
+    padding-top: 0.5rem;
   }
 
   .problem-story-main {
-    margin: 2.5rem 0;
+    margin: 1.75rem 0;
   }
 
   .problem-story-copy {
     margin-top: 1.25rem;
     font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .problem-story-closing-copy {
+    font-size: clamp(2.25rem, 10vw, 3.8rem);
   }
 
   .problem-story-progress {
